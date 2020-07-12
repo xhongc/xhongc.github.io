@@ -1,9 +1,8 @@
-title: First Post on My Sweet New Blog
+title: 使用 Python 在 GitHub 上运行你的博客
 date: 2020-07-12
 author: charles
 
 # I am On My Way To Internet Fame and Fortune!
 
-This is my first post on my new blog. While not super informative it
-should convey my sense of excitement and eagerness to engage with you,
-the reader!
+使用 Pelican 创建博客，这是一个基于 Python 的平台，与 GitHub 配合的不错。
+[zhuhu](https://zhuanlan.zhihu.com/p/122956498)
