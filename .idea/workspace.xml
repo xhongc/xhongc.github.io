@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d7e8153b-115b-48ef-9473-e3727a494399" name="Default Changelist" comment="add first-post.md" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="content" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1eahesLvlyI9s6td2bkWVFsiFSP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d7e8153b-115b-48ef-9473-e3727a494399" name="Default Changelist" comment="" />
+      <created>1594565709901</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594565709901</updated>
+      <workItem from="1594565711213" duration="1624000" />
+      <workItem from="1594567349853" duration="447000" />
+    </task>
+    <task id="LOCAL-00001" summary="inti pelican content">
+      <created>1594566534005</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1594566534005</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add first-post.md">
+      <created>1594567179460</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1594567179460</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="inti pelican content" />
+    <MESSAGE value="add first-post.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="add first-post.md" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="584" y="264" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594567696549">
+      <screen x="0" y="0" width="1631" height="918" />
+    </state>
+    <state x="584" y="264" key="#com.intellij.fileTypes.FileTypeChooser/-1920.0.1631.918/0.0.1631.918@0.0.1631.918" timestamp="1594567696549" />
+    <state x="620" y="218" key="FileChooserDialogImpl" timestamp="1594567794607">
+      <screen x="0" y="0" width="1631" height="918" />
+    </state>
+    <state x="620" y="218" key="FileChooserDialogImpl/-1920.0.1631.918/0.0.1631.918@0.0.1631.918" timestamp="1594567794607" />
+    <state x="323" y="125" key="SettingsEditor" timestamp="1594565787786">
+      <screen x="0" y="0" width="1631" height="918" />
+    </state>
+    <state x="323" y="125" key="SettingsEditor/-1920.0.1631.918/0.0.1631.918@0.0.1631.918" timestamp="1594565787786" />
+    <state x="421" y="198" key="Vcs.Push.Dialog.v2" timestamp="1594567181210">
+      <screen x="0" y="0" width="1631" height="918" />
+    </state>
+    <state x="421" y="198" key="Vcs.Push.Dialog.v2/-1920.0.1631.918/0.0.1631.918@0.0.1631.918" timestamp="1594567181210" />
+  </component>
+</project>
