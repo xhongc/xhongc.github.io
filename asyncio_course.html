@@ -1,855 +1,443 @@
-<!DOCTYPE html>
-<html lang="chinese (simplified)" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
-<head>
-    <title>python协程库asyncio(异步io) - 少年白</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <link href="/images/flower.png" rel="icon">
-
-<link rel="canonical" href="/asyncio_course.html">
-
-        <meta name="author" content="charles" />
-        <meta name="keywords" content="python" />
-        <meta name="description" content="介绍 异步IO：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。 协程：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。 asyncio中几个重要概念 1.事件循环 事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。 - 创建事件循环 loop = asyncio.get_event_loop() 获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。 另起一个线程创建事件循环 from threading import Thread import asyncio def start_thread_loop …" />
-
-        <meta property="og:site_name" content="少年白" />
-        <meta property="og:type" content="article"/>
-        <meta property="og:title" content="python协程库asyncio(异步io)"/>
-        <meta property="og:url" content="/asyncio_course.html"/>
-        <meta property="og:description" content="介绍 异步IO：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。 协程：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。 asyncio中几个重要概念 1.事件循环 事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。 - 创建事件循环 loop = asyncio.get_event_loop() 获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。 另起一个线程创建事件循环 from threading import Thread import asyncio def start_thread_loop …"/>
-        <meta property="article:published_time" content="2019-07-19" />
-            <meta property="article:section" content="python" />
-            <meta property="article:tag" content="python" />
-            <meta property="article:author" content="charles" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="/theme/css/pygments/friendly.css" rel="stylesheet">
-    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
-
-        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="少年白 ATOM Feed"/>
-
-        <link href="/feeds/python.atom.xml" type="application/atom+xml" rel="alternate"
-              title="少年白 python ATOM Feed"/>
-</head>
-<body>
-
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="/" class="navbar-brand">
-少年白            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                         <li><a href="/pages/about.html">
-                             About
-                          </a></li>
-                        <li class="active">
-                            <a href="/category/python.html">Python</a>
-                        </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<!-- Banner -->
-<!-- End Banner -->
-
-<!-- Content Container -->
-<div class="container">
-    <div class="row">
-        <div class="col-sm-9">
-    <section id="content">
-        <article>
-            <header class="page-header">
-                <h1>
-                    <a href="/asyncio_course.html"
-                       rel="bookmark"
-                       title="Permalink to python协程库asyncio(异步io)">
-                        python协程库asyncio(异步io)
-                    </a>
-                </h1>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2019-07-19T00:00:00+00:00"> 2019-07-19</time>
-    </span>
-
-
+<!DOCTYPE html> <html lang="chinese (simplified)" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml"> <title>python协程库asyncio(异步io) - 少年白</title> <meta http-equiv=X-UA-Compatible  content="IE=edge"> <meta charset=utf-8 > <meta name=viewport  content="width=device-width, initial-scale=1.0"> <link href="/images/flower.png" rel=icon > <link rel=canonical  href="/asyncio_course.html"> <meta name=author  content=charles  /> <meta name=keywords  content=python  /> <meta name=description  content="介绍 异步IO：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。 协程：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。 asyncio中几个重要概念 1.事件循环 事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。 - 创建事件循环 loop = asyncio.get_event_loop() 获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。 另起一个线程创建事件循环 from threading import Thread import asyncio def start_thread_loop …" /> <meta property="og:site_name" content="少年白" /> <meta property="og:type" content=article /> <meta property="og:title" content="python协程库asyncio(异步io)"/> <meta property="og:url" content="/asyncio_course.html"/> <meta property="og:description" content="介绍 异步IO：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。 协程：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。 asyncio中几个重要概念 1.事件循环 事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。 - 创建事件循环 loop = asyncio.get_event_loop() 获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。 另起一个线程创建事件循环 from threading import Thread import asyncio def start_thread_loop …"/> <meta property="article:published_time" content=2019-07-19  /> <meta property="article:section" content=python  /> <meta property="article:tag" content=python  /> <meta property="article:author" content=charles  /> <link rel=stylesheet  href="/theme/css/bootstrap.min.css" type="text/css"/> <link href="/theme/css/font-awesome.min.css" rel=stylesheet > <link href="/theme/css/pygments/friendly.css" rel=stylesheet > <link rel=stylesheet  href="/theme/css/style.css" type="text/css"/> <link href="/feeds/all.atom.xml" type="application/atom+xml" rel=alternate  title="少年白 ATOM Feed"/> <link href="/feeds/python.atom.xml" type="application/atom+xml" rel=alternate  title="少年白 python ATOM Feed"/> <div class="navbar navbar-default navbar-fixed-top" role=navigation > <div class=container > <div class=navbar-header > <button type=button  class=navbar-toggle  data-toggle=collapse  data-target=.navbar-ex1-collapse > <span class=sr-only >Toggle navigation</span> <span class=icon-bar ></span> <span class=icon-bar ></span> <span class=icon-bar ></span> </button> <a href="/" class=navbar-brand > 少年白 </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href="/pages/about.html"> About </a> <li class=active > <a href="/category/python.html">Python</a> </ul> <ul class="nav navbar-nav navbar-right"> </ul> </div> </div> </div> <div class=container > <div class=row > <div class=col-sm-9 > <section id=content > <article> <header class=page-header > <h1> <a href="/asyncio_course.html" rel=bookmark  title="Permalink to python协程库asyncio(异步io)"> python协程库asyncio(异步io) </a> </h1> </header> <div class=entry-content > <div class=panel > <div class=panel-body > <footer class=post-info > <span class="label label-default">Date</span> <span class=published > <i class="fa fa-calendar"></i><time datetime="2019-07-19T00:00:00+00:00"> 2019-07-19</time> </span> <span class="label label-default">Tags</span> <a href="/tag/python.html">python</a> </footer> </div> </div> <h1>介绍</h1> <blockquote> <p><strong>异步IO</strong>：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。 <strong>协程</strong>：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。</p> </blockquote> <hr> <h4>asyncio中几个重要概念</h4> <h6>1.事件循环</h6> <p>事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。 - 创建事件循环 <code>loop = asyncio.get_event_loop()</code> 获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。</p> <ul> <li>另起一个线程创建事件循环 </ul> <div class=highlight ><pre><span></span><code><span class=kn >from</span> <span class=nn >threading</span> <span class=kn >import</span> <span class=n >Thread</span>
+<span class=kn >import</span> <span class=nn >asyncio</span>
+
+<span class=k >def</span> <span class=nf >start_thread_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >):</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >set_event_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >)</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_forever</span><span class=p >()</span>
+
+<span class=n >new_loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >new_event_loop</span><span class=p >()</span>
+<span class=n >loop_thread</span> <span class=o >=</span> <span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span><span class=n >start_thread_loop</span><span class=p >,</span> <span class=n >args</span><span class=o >=</span><span class=p >(</span><span class=n >new_loop</span><span class=p >,))</span>
+<span class=n >loop_thread</span><span class=o >.</span><span class=n >setDaemon</span><span class=p >(</span><span class=kc >True</span><span class=p >)</span> <span class=c1 ># 守护线程</span>
+<span class=n >loop_thread</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+</code></pre></div> <h6>2.Future</h6> <p>Future对象表示尚未完成的计算，还未完成的结果，它和task上没有本质上的区别</p> <h6>3.Task</h6> <p>是Future的子类，作用是在运行某个任务的同时可以并发的运行多个任务。 asyncio.Task用于实现协作式多任务的库，且Task对象不能用户手动实例化，通过下面2个函数创建： <code>loop.create_task() 或 asyncio.ensure_future()</code> - loop.create_task() ,要在定义loop对象之后，调用将方法对象转化成了task的对象 - asyncio.ensure_future() 直接调用asyncio 的ensure_future() 方法，返回的也是task 对象（我们还没有声明 loop 也可以提前定义好 task 对象）</p> <h6>4.async/await 关键字</h6> <p>asyncio实现了TCP、UDP、SSL等协议，async定义一个协程，await用于挂起阻塞的异步调用接口。 对于异步io你需要知道的重点，要注意的是，await语法只能出现在通过async修饰的函数中，否则会报SyntaxError错误。而且await后面的对象需要是一个<em>Awaitable</em>，或者实现了相关的协议。</p> <p>#### 注意 1. 所有需要异步执行的函数，都需要asyncio中的轮询器去轮询执行，如果函数阻塞，轮询器就会去执行下一个函数。所以所有需要异步执行的函数都需要加入到这个轮询器中。</p> <ol> <li>若在协程中需要有延时操作，应该使用 await asyncio.sleep()，而不是使用time.sleep()，因为使用time.sleep()后会释放GIL，阻塞整个主线程，从而阻塞整个事件循环。 </ol> <h1>创建一个协程</h1> <blockquote> <p>使用async可以定义协程对象，使用await可以针对耗时的操作进行挂起，就像生成器里的yield一样，函数让出控制权。协程遇到await，事件循环将会挂起该协程，执行别的协程，直到其他的协程也挂起或者执行完毕，再进行下一个协程的执行</p> </blockquote> <p>耗时的操作一般是一些IO操作，例如网络请求，文件读取等。我们使用asyncio.sleep函数来模拟IO操作。协程的目的也是让这些IO操作异步化。</p> <h3>简单例子</h3> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >execute</span><span class=p >(</span><span class=n >x</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;Number:&#39;</span><span class=p >,</span> <span class=n >x</span><span class=p >)</span>
+
+<span class=n >coroutine</span> <span class=o >=</span> <span class=n >execute</span><span class=p >(</span><span class=mi >1</span><span class=p >)</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;Coroutine:&#39;</span><span class=p >,</span> <span class=n >coroutine</span><span class=p >)</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;After calling execute&#39;</span><span class=p >)</span>
+
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >coroutine</span><span class=p >)</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;After calling loop&#39;</span><span class=p >)</span>
+</code></pre></div> <p>首先我们引入了 asyncio 这个包，这样我们才可以使用 async 和 await，然后我们使用 async 定义了一个 execute() 方法，方法接收一个数字参数，方法执行之后会打印这个数字。</p> <p>随后我们直接调用了这个方法，然而这个方法并没有执行，而是返回了一个 coroutine 协程对象。随后我们使用 get_event_loop() 方法创建了一个事件循环 loop，并调用了 loop 对象的 run_until_complete() 方法将协程注册到事件循环 loop 中，然后启动。最后我们才看到了 execute() 方法打印了输出结果。</p> <p>可见，async 定义的方法就会变成一个无法直接执行的 coroutine 对象，必须将其注册到事件循环中才可以执行。</p> <h3>进阶例子</h3> <blockquote> <p>多个任务，定义一个task列表，使用asyncio.gather(*tasks) 或 asyncio.wait(tasks) 接收</p> </blockquote> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >time</span>
+
+<span class=n >now</span> <span class=o >=</span> <span class=k >lambda</span><span class=p >:</span> <span class=n >time</span><span class=o >.</span><span class=n >time</span><span class=p >()</span>
+
+<span class=sd >&quot;&quot;&quot;</span>
+<span class=sd >asyncio.gather主要集中在收集结果上。它等待一堆task并按给定的顺序返回结果。</span>
+
+<span class=sd >asyncio.wait等待task。而不是直接给你结果，它提供完成和待处理的任务。你必须手工收集结果。</span>
+<span class=sd >asyncio.wait(tasks) ps:asyncio.wait([1,2,3]) 也可以使用 asyncio.gather(*tasks) ps: asyncio.gather(1,2,3),前者接受一个task列表，后者接收一堆task。</span>
+<span class=sd >&quot;&quot;&quot;</span>
+
+
+<span class=c1 ># 定义一个异步任务</span>
+<span class=k >async</span> <span class=k >def</span> <span class=nf >do_some_work</span><span class=p >(</span><span class=n >x</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;waiting:&quot;</span><span class=p >,</span> <span class=n >x</span><span class=p >)</span>
+    <span class=c1 ># 模拟io阻塞</span>
+    <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=n >x</span><span class=p >)</span>
+    <span class=k >return</span> <span class=s2 >&quot;Done after </span><span class=si >{}</span><span class=s2 >s&quot;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >x</span><span class=p >)</span>
+
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >main</span><span class=p >(</span><span class=n >loop</span><span class=p >):</span>
+    <span class=sd >&quot;&quot;&quot;</span>
+<span class=sd >    :param loop: loop.create_task（需要传进loop参数）</span>
+<span class=sd >    :return: None</span>
+<span class=sd >    &quot;&quot;&quot;</span>
+    <span class=n >coroutine1</span> <span class=o >=</span> <span class=n >do_some_work</span><span class=p >(</span><span class=mi >1</span><span class=p >)</span>
+    <span class=n >coroutine2</span> <span class=o >=</span> <span class=n >do_some_work</span><span class=p >(</span><span class=mi >2</span><span class=p >)</span>
+    <span class=n >coroutine3</span> <span class=o >=</span> <span class=n >do_some_work</span><span class=p >(</span><span class=mi >4</span><span class=p >)</span>
+    <span class=c1 ># asyncio.ensure_future</span>
+    <span class=n >tasks</span> <span class=o >=</span> <span class=p >[</span>
+        <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine1</span><span class=p >),</span>
+        <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine2</span><span class=p >),</span>
+        <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine3</span><span class=p >)</span>
+    <span class=p >]</span>
+    <span class=c1 ># loop.create_task（需要传进loop参数）</span>
+    <span class=c1 ># tasks = [</span>
+    <span class=c1 >#     loop.create_task(coroutine1),</span>
+    <span class=c1 >#     loop.create_task(coroutine2),</span>
+    <span class=c1 >#     loop.create_task(coroutine3)</span>
+    <span class=c1 ># ]</span>
+    <span class=c1 ># 返回 完成的 task object</span>
+    <span class=n >dones</span><span class=p >,</span> <span class=n >pendings</span> <span class=o >=</span> <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >dones</span><span class=p >,</span> <span class=n >pendings</span><span class=p >)</span>
+    <span class=k >for</span> <span class=n >task</span> <span class=ow >in</span> <span class=n >dones</span><span class=p >:</span>
+        <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Task ret:&quot;</span><span class=p >,</span> <span class=n >task</span><span class=o >.</span><span class=n >result</span><span class=p >())</span>
+
+    <span class=c1 ># 返回 task 方法的 返回值</span>
+    <span class=c1 ># results = await asyncio.gather(*tasks)</span>
+    <span class=c1 ># for result in results:</span>
+    <span class=c1 >#     print(&quot;Task ret:&quot;,result)</span>
+
+
+<span class=n >start</span> <span class=o >=</span> <span class=n >now</span><span class=p >()</span>
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >main</span><span class=p >(</span><span class=n >loop</span><span class=p >))</span>
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Time:&quot;</span><span class=p >,</span> <span class=n >now</span><span class=p >()</span> <span class=o >-</span> <span class=n >start</span><span class=p >)</span>
+</code></pre></div> <h1>gather和wait 的区别</h1> <blockquote> <p>把多个协程注册进一个事件循环中的两种方法</p> </blockquote> <h3>使用方式区别</h3> <ol> <li>使用<code>asyncio.wait()</code> </ol> <div class=highlight ><pre><span></span><code><span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+</code></pre></div> <ol> <li>使用<code>asyncio.gather()</code> </ol> <div class=highlight ><pre><span></span><code><span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >gather</span><span class=p >(</span><span class=o >*</span><span class=n >tasks</span><span class=p >))</span> <span class=c1 ># *接收args参数 </span>
+</code></pre></div> <h3>接收参数区别</h3> <h4>asyncio.wait</h4> <blockquote> <p>参数必须是list对象 ，list 对象存放多个 task object</p> </blockquote> <ul> <li>用asyncio.ensure_future转为task对象 </ul> <div class=highlight ><pre><span></span><code><span class=n >tasks</span><span class=o >=</span><span class=p >[</span>
+       <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine1</span><span class=p >),</span>
+       <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine2</span><span class=p >),</span>
+       <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine3</span><span class=p >)</span>
+<span class=p >]</span>
+
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+</code></pre></div> <ul> <li>不转为task对象 </ul> <div class=highlight ><pre><span></span><code><span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+
+<span class=n >tasks</span><span class=o >=</span><span class=p >[</span>
+       <span class=n >coroutine1</span><span class=p >,</span>
+       <span class=n >coroutine2</span><span class=p >,</span>
+       <span class=n >coroutine3</span>
+<span class=p >]</span>
+
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+</code></pre></div> <h4>asyncio.gather</h4> <p>必须用 <code>*</code> 来接收 list 对象</p> <div class=highlight ><pre><span></span><code><span class=n >tasks</span><span class=o >=</span><span class=p >[</span>
+       <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine1</span><span class=p >),</span>
+       <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine2</span><span class=p >),</span>
+       <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine3</span><span class=p >)</span>
+<span class=p >]</span>
 
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >gather</span><span class=p >(</span><span class=o >*</span><span class=n >tasks</span><span class=p >))</span>
+</code></pre></div> <h3>返回结果区别</h3> <h4>asyncio.wait</h4> <p><code>asyncio.wait</code>返回<code>dones</code>和<code>pendings</code> - dones：表示已经完成的任务 - pendings：表示未完成的任务</p> <p>我们需要手动去获取结果</p> <div class=highlight ><pre><span></span><code><span class=n >dones</span><span class=p >,</span> <span class=n >pendings</span> <span class=o >=</span> <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >dones</span><span class=p >,</span> <span class=n >pendings</span><span class=p >)</span>
+    <span class=k >for</span> <span class=n >task</span> <span class=ow >in</span> <span class=n >dones</span><span class=p >:</span>
+        <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Task ret:&quot;</span><span class=p >,</span> <span class=n >task</span><span class=o >.</span><span class=n >result</span><span class=p >())</span>
+</code></pre></div> <h4>asyncio.gather</h4> <p>它的返回值就是 return的结果 ，不用再task.result() 来获取</p> <div class=highlight ><pre><span></span><code><span class=c1 ># 返回 task 方法的 返回值</span>
+    <span class=n >results</span> <span class=o >=</span> <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >gather</span><span class=p >(</span><span class=o >*</span><span class=n >tasks</span><span class=p >)</span>
+    <span class=k >for</span> <span class=n >result</span> <span class=ow >in</span> <span class=n >results</span><span class=p >:</span>
+         <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Task ret:&quot;</span><span class=p >,</span><span class=n >result</span><span class=p >)</span>
+</code></pre></div> <h3>另 asyncio.wait 带有控制功能</h3> <blockquote> <p>【控制运行任务数】：运行第一个任务就返回 FIRST_COMPLETED ：第一个任务完全返回 FIRST_EXCEPTION：产生第一个异常返回 ALL_COMPLETED：所有任务完成返回 （默认选项）</p> </blockquote> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >random</span>
 
 
-<span class="label label-default">Tags</span>
-	<a href="/tag/python.html">python</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <h1>介绍</h1>
-<blockquote>
-<p><strong>异步IO</strong>：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
-<strong>协程</strong>：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。</p>
-</blockquote>
-<hr>
-<h4>asyncio中几个重要概念</h4>
-<h6>1.事件循环</h6>
-<p>事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。
-- 创建事件循环
-<code>loop = asyncio.get_event_loop()</code> 
-获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。</p>
-<ul>
-<li>另起一个线程创建事件循环</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
-
-<span class="k">def</span> <span class="nf">start_thread_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-
-<span class="n">new_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-<span class="n">loop_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">start_thread_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">new_loop</span><span class="p">,))</span>
-<span class="n">loop_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># 守护线程</span>
-<span class="n">loop_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</code></pre></div>
-
-
-<h6>2.Future</h6>
-<p>Future对象表示尚未完成的计算，还未完成的结果，它和task上没有本质上的区别</p>
-<h6>3.Task</h6>
-<p>是Future的子类，作用是在运行某个任务的同时可以并发的运行多个任务。
-asyncio.Task用于实现协作式多任务的库，且Task对象不能用户手动实例化，通过下面2个函数创建：
-<code>loop.create_task() 或 asyncio.ensure_future()</code>
-- loop.create_task() ,要在定义loop对象之后，调用将方法对象转化成了task的对象
-- asyncio.ensure_future() 直接调用asyncio 的ensure_future() 方法，返回的也是task 对象（我们还没有声明 loop 也可以提前定义好 task 对象）</p>
-<h6>4.async/await 关键字</h6>
-<p>asyncio实现了TCP、UDP、SSL等协议，async定义一个协程，await用于挂起阻塞的异步调用接口。
-对于异步io你需要知道的重点，要注意的是，await语法只能出现在通过async修饰的函数中，否则会报SyntaxError错误。而且await后面的对象需要是一个<em>Awaitable</em>，或者实现了相关的协议。</p>
-<p>#### 注意
-1. 所有需要异步执行的函数，都需要asyncio中的轮询器去轮询执行，如果函数阻塞，轮询器就会去执行下一个函数。所以所有需要异步执行的函数都需要加入到这个轮询器中。</p>
-<ol>
-<li>若在协程中需要有延时操作，应该使用 await asyncio.sleep()，而不是使用time.sleep()，因为使用time.sleep()后会释放GIL，阻塞整个主线程，从而阻塞整个事件循环。</li>
-</ol>
-<h1>创建一个协程</h1>
-<blockquote>
-<p>使用async可以定义协程对象，使用await可以针对耗时的操作进行挂起，就像生成器里的yield一样，函数让出控制权。协程遇到await，事件循环将会挂起该协程，执行别的协程，直到其他的协程也挂起或者执行完毕，再进行下一个协程的执行</p>
-</blockquote>
-<p>耗时的操作一般是一些IO操作，例如网络请求，文件读取等。我们使用asyncio.sleep函数来模拟IO操作。协程的目的也是让这些IO操作异步化。</p>
-<h3>简单例子</h3>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number:&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-
-<span class="n">coroutine</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Coroutine:&#39;</span><span class="p">,</span> <span class="n">coroutine</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;After calling execute&#39;</span><span class="p">)</span>
-
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">coroutine</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;After calling loop&#39;</span><span class="p">)</span>
-</code></pre></div>
-
-
-<p>首先我们引入了 asyncio 这个包，这样我们才可以使用 async 和 await，然后我们使用 async 定义了一个 execute() 方法，方法接收一个数字参数，方法执行之后会打印这个数字。</p>
-<p>随后我们直接调用了这个方法，然而这个方法并没有执行，而是返回了一个 coroutine 协程对象。随后我们使用 get_event_loop() 方法创建了一个事件循环 loop，并调用了 loop 对象的 run_until_complete() 方法将协程注册到事件循环 loop 中，然后启动。最后我们才看到了 execute() 方法打印了输出结果。</p>
-<p>可见，async 定义的方法就会变成一个无法直接执行的 coroutine 对象，必须将其注册到事件循环中才可以执行。</p>
-<h3>进阶例子</h3>
-<blockquote>
-<p>多个任务，定义一个task列表，使用asyncio.gather(*tasks) 或 asyncio.wait(tasks) 接收</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="n">now</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">asyncio.gather主要集中在收集结果上。它等待一堆task并按给定的顺序返回结果。</span>
-
-<span class="sd">asyncio.wait等待task。而不是直接给你结果，它提供完成和待处理的任务。你必须手工收集结果。</span>
-<span class="sd">asyncio.wait(tasks) ps:asyncio.wait([1,2,3]) 也可以使用 asyncio.gather(*tasks) ps: asyncio.gather(1,2,3),前者接受一个task列表，后者接收一堆task。</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
-<span class="c1"># 定义一个异步任务</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">do_some_work</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;waiting:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="c1"># 模拟io阻塞</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">&quot;Done after </span><span class="si">{}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :param loop: loop.create_task（需要传进loop参数）</span>
-<span class="sd">    :return: None</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coroutine1</span> <span class="o">=</span> <span class="n">do_some_work</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">coroutine2</span> <span class="o">=</span> <span class="n">do_some_work</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">coroutine3</span> <span class="o">=</span> <span class="n">do_some_work</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="c1"># asyncio.ensure_future</span>
-    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine1</span><span class="p">),</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine2</span><span class="p">),</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine3</span><span class="p">)</span>
-    <span class="p">]</span>
-    <span class="c1"># loop.create_task（需要传进loop参数）</span>
-    <span class="c1"># tasks = [</span>
-    <span class="c1">#     loop.create_task(coroutine1),</span>
-    <span class="c1">#     loop.create_task(coroutine2),</span>
-    <span class="c1">#     loop.create_task(coroutine3)</span>
-    <span class="c1"># ]</span>
-    <span class="c1"># 返回 完成的 task object</span>
-    <span class="n">dones</span><span class="p">,</span> <span class="n">pendings</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">dones</span><span class="p">,</span> <span class="n">pendings</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">dones</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task ret:&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-
-    <span class="c1"># 返回 task 方法的 返回值</span>
-    <span class="c1"># results = await asyncio.gather(*tasks)</span>
-    <span class="c1"># for result in results:</span>
-    <span class="c1">#     print(&quot;Task ret:&quot;,result)</span>
-
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span>
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">loop</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time:&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-</code></pre></div>
-
-
-<h1>gather和wait 的区别</h1>
-<blockquote>
-<p>把多个协程注册进一个事件循环中的两种方法</p>
-</blockquote>
-<h3>使用方式区别</h3>
-<ol>
-<li>使用<code>asyncio.wait()</code></li>
-</ol>
-<div class="highlight"><pre><span></span><code><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-</code></pre></div>
-
-
-<ol>
-<li>使用<code>asyncio.gather()</code></li>
-</ol>
-<div class="highlight"><pre><span></span><code><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">))</span> <span class="c1"># *接收args参数 </span>
-</code></pre></div>
-
-
-<h3>接收参数区别</h3>
-<h4>asyncio.wait</h4>
-<blockquote>
-<p>参数必须是list对象 ，list 对象存放多个 task object</p>
-</blockquote>
-<ul>
-<li>用asyncio.ensure_future转为task对象</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="n">tasks</span><span class="o">=</span><span class="p">[</span>
-       <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine1</span><span class="p">),</span>
-       <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine2</span><span class="p">),</span>
-       <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine3</span><span class="p">)</span>
-<span class="p">]</span>
-
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-</code></pre></div>
-
-
-<ul>
-<li>不转为task对象</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-
-<span class="n">tasks</span><span class="o">=</span><span class="p">[</span>
-       <span class="n">coroutine1</span><span class="p">,</span>
-       <span class="n">coroutine2</span><span class="p">,</span>
-       <span class="n">coroutine3</span>
-<span class="p">]</span>
-
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-</code></pre></div>
-
-
-<h4>asyncio.gather</h4>
-<p>必须用 <code>*</code> 来接收 list 对象</p>
-<div class="highlight"><pre><span></span><code><span class="n">tasks</span><span class="o">=</span><span class="p">[</span>
-       <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine1</span><span class="p">),</span>
-       <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine2</span><span class="p">),</span>
-       <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine3</span><span class="p">)</span>
-<span class="p">]</span>
-
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">))</span>
-</code></pre></div>
-
-
-<h3>返回结果区别</h3>
-<h4>asyncio.wait</h4>
-<p><code>asyncio.wait</code>返回<code>dones</code>和<code>pendings</code> 
-- dones：表示已经完成的任务 
-- pendings：表示未完成的任务</p>
-<p>我们需要手动去获取结果</p>
-<div class="highlight"><pre><span></span><code><span class="n">dones</span><span class="p">,</span> <span class="n">pendings</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">dones</span><span class="p">,</span> <span class="n">pendings</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">dones</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task ret:&quot;</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-</code></pre></div>
-
-
-<h4>asyncio.gather</h4>
-<p>它的返回值就是 return的结果 ，不用再task.result() 来获取</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># 返回 task 方法的 返回值</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Task ret:&quot;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
-</code></pre></div>
-
-
-<h3>另 asyncio.wait 带有控制功能</h3>
-<blockquote>
-<p>【控制运行任务数】：运行第一个任务就返回
-    FIRST_COMPLETED ：第一个任务完全返回
-    FIRST_EXCEPTION：产生第一个异常返回
-    ALL_COMPLETED：所有任务完成返回 （默认选项）</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">random</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">coro</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tag</span>
-
-
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-
-<span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">coro</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span>
-
-<span class="c1"># 第一次wait 完成情况</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Get first result:&quot;</span><span class="p">)</span>
-<span class="n">finished</span><span class="p">,</span> <span class="n">unfinished</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">,</span> <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">FIRST_COMPLETED</span><span class="p">))</span> <span class="c1"># 第一个任务完全返回</span>
-
-<span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">finished</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unfinished:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">unfinished</span><span class="p">))</span>
-
-<span class="c1"># 继续第一次未完成任务</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Get more results in 2 seconds:&quot;</span><span class="p">)</span>
-<span class="n">finished2</span><span class="p">,</span> <span class="n">unfinished2</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">unfinished</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># 超时2s 返回</span>
-
-<span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">finished2</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unfinished2:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">unfinished2</span><span class="p">))</span>
-
-<span class="c1"># 继续第2次未完成任务</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Get all other results:&quot;</span><span class="p">)</span>
-<span class="n">finished3</span><span class="p">,</span> <span class="n">unfinished3</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">unfinished2</span><span class="p">))</span> <span class="c1"># ALL_COMPLETED：所有任务完成返回 （默认项）</span>
-
-<span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">finished3</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
-
-<span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-
-
-<h1>动态添加协程</h1>
-<blockquote>
-<p>很多时候，我们的事件循环用于注册协程，而有的协程需要动态的添加到事件循环中。一个简单的方式就是使用多线程。当前线程创建一个事件循环，然后在新建一个线程，在新线程中启动事件循环。当前线程不会被block</p>
-</blockquote>
-<p>相关函数介绍：</p>
-<p>loop.call_soon_threadsafe() ：与 call_soon()类似，等待此函数返回后马上调用回调函数，返回值是一个 asyncio.Handle 对象，此对象内只有一个方法为 cancel()方法，用来取消回调函数。</p>
-<p>loop.call_soon() ： 与call_soon_threadsafe()类似，call_soon_threadsafe() 是线程安全的</p>
-<p>loop.call_later()：延迟多少秒后执行回调函数</p>
-<p>loop.call_at()：在指定时间执行回调函数，这里的时间统一使用 loop.time() 来替代 time.sleep()</p>
-<p>asyncio.run_coroutine_threadsafe()： 动态的加入协程，参数为一个回调函数和一个loop对象，返回值为future对象，通过future.result()获取回调函数返回值</p>
-<p>动态添加协程同步方式
-通过调用 call_soon_threadsafe()函数，传入一个回调函数callback和一个位置参数</p>
-<p>注意：同步方式，回调函数 more_work()为普通函数</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="n">now</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">start_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">more_work</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;More work </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished more work </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span>
-<span class="n">new_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">start_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">new_loop</span><span class="p">,))</span>
-<span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TIME: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>
-
-<span class="n">new_loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="n">more_work</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="n">new_loop</span><span class="o">.</span><span class="n">call_soon_threadsafe</span><span class="p">(</span><span class="n">more_work</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;here&#39;</span><span class="p">)</span>
-</code></pre></div>
-
-
-<p>启动上述代码之后，当前线程不会被block，新线程中会按照顺序执行call_soon_threadsafe方法注册的more_work方法， 后者因为time.sleep操作是同步阻塞的，因此运行完毕more_work需要大致6 + 3</p>
-<hr>
-<p>异步方式</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-
-<span class="n">now</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">start_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">do_some_work</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Waiting </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done after </span><span class="si">{}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span>
-<span class="n">new_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">start_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">new_loop</span><span class="p">,))</span>
-<span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TIME: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">))</span>
-
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">do_some_work</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="n">new_loop</span><span class="p">)</span>
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">do_some_work</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">new_loop</span><span class="p">)</span>
-</code></pre></div>
-
-
-<p>上述的例子，主线程中创建一个new_loop，然后在另外的子线程中开启一个无限事件循环。 主线程通过run_coroutine_threadsafe新注册协程对象。这样就能在子线程中进行事件循环的并发操作，同时主线程又不会被block。一共执行的时间大概在6s左右。</p>
-<h1>协程的停止</h1>
-<p>future对象有几个状态：</p>
-<p>Pending
-Running
-Done
-Cacelled
-创建future的时候，task为pending，事件循环调用执行的时候当然就是running，调用完毕自然就是done，如果需要停止事件循环，就需要先把task取消。可以使用asyncio.Task获取事件循环的task</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="n">now</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">do_some_work</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Waiting:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">&quot;Done after </span><span class="si">{}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-
-<span class="n">coroutine1</span> <span class="o">=</span> <span class="n">do_some_work</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">coroutine2</span> <span class="o">=</span> <span class="n">do_some_work</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">coroutine3</span> <span class="o">=</span> <span class="n">do_some_work</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine1</span><span class="p">),</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine2</span><span class="p">),</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">ensure_future</span><span class="p">(</span><span class="n">coroutine3</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span>
-
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-<span class="k">except</span> <span class="ne">KeyboardInterrupt</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">())</span>
-    <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="o">.</span><span class="n">all_tasks</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">cancel</span><span class="p">())</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-<span class="k">finally</span><span class="p">:</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time:&quot;</span><span class="p">,</span> <span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-</code></pre></div>
-
-
-<p>启动事件循环之后，马上ctrl+c，会触发run_until_complete的执行异常 KeyBorardInterrupt。然后通过循环asyncio.Task取消future。
-True表示cannel成功，loop stop之后还需要再次开启事件循环，最后在close，不然还会抛出异常
-循环task，逐个cancel是一种方案，可是正如上面我们把task的列表封装在main函数中，main函数外进行事件循环的调用。这个时候，main相当于最外出的一个task，那么处理包装的main函数即可。</p>
-<h1>协程中生产-消费模型设计</h1>
-<blockquote>
-<p>通过上面的动态添加协程的思想，我们可以设计一个生产-消费的模型，至于中间件（管道）是什么无所谓，下面以内置队列和redis队列来举例说明。</p>
-</blockquote>
-<p>提示：若想主线程退出时，子线程也随之退出，需要将子线程设置为守护线程，函数 setDaemon(True)</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="k">def</span> <span class="nf">start_thread_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-
-<span class="k">def</span> <span class="nf">consumer</span><span class="p">():</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">dq</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">dq</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
-                <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">thread_example</span><span class="p">(</span><span class="s1">&#39;Zarten&#39;</span><span class="o">+</span> <span class="n">msg</span><span class="p">),</span> <span class="n">new_loop</span><span class="p">)</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">thread_example</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;正在执行name:&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s1">&#39;返回结果：&#39;</span> <span class="o">+</span> <span class="n">name</span>
-
-
-
-<span class="n">dq</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
-
-<span class="n">new_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-<span class="n">loop_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span> <span class="n">start_thread_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">new_loop</span><span class="p">,))</span>
-<span class="n">loop_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">loop_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="n">consumer_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span> <span class="n">consumer</span><span class="p">)</span>
-<span class="n">consumer_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">consumer_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-    <span class="n">dq</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div>
-
-
-<h3>redis队列模型</h3>
-<p>生产者代码：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">redis</span>
-
-<span class="n">conn_pool</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">ConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">)</span>
-<span class="n">redis_conn</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">connection_pool</span><span class="o">=</span><span class="n">conn_pool</span><span class="p">)</span>
-
-<span class="n">redis_conn</span><span class="o">.</span><span class="n">lpush</span><span class="p">(</span><span class="s1">&#39;coro_test&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>
-<span class="n">redis_conn</span><span class="o">.</span><span class="n">lpush</span><span class="p">(</span><span class="s1">&#39;coro_test&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">)</span>
-<span class="n">redis_conn</span><span class="o">.</span><span class="n">lpush</span><span class="p">(</span><span class="s1">&#39;coro_test&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">)</span>
-<span class="n">redis_conn</span><span class="o">.</span><span class="n">lpush</span><span class="p">(</span><span class="s1">&#39;coro_test&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">)</span>
-</code></pre></div>
-
-
-<p>消费者代码：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">redis</span>
-
-<span class="k">def</span> <span class="nf">get_redis</span><span class="p">():</span>
-    <span class="n">conn_pool</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">ConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">connection_pool</span><span class="o">=</span> <span class="n">conn_pool</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">start_thread_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
-    <span class="n">asyncio</span><span class="o">.</span><span class="n">set_event_loop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_forever</span><span class="p">()</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">thread_example</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;正在执行name:&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s1">&#39;返回结果：&#39;</span> <span class="o">+</span> <span class="n">name</span>
-
-
-<span class="n">redis_conn</span> <span class="o">=</span> <span class="n">get_redis</span><span class="p">()</span>
-
-<span class="n">new_loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-<span class="n">loop_thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span> <span class="n">start_thread_loop</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">new_loop</span><span class="p">,))</span>
-<span class="n">loop_thread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">loop_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="c1">#循环接收redis消息并动态加入协程</span>
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="n">redis_conn</span><span class="o">.</span><span class="n">rpop</span><span class="p">(</span><span class="s1">&#39;coro_test&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">thread_example</span><span class="p">(</span><span class="s1">&#39;Zarten&#39;</span> <span class="o">+</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span> <span class="n">new_loop</span><span class="p">)</span>
-</code></pre></div>
-
-
-<h1>asyncio在aiohttp中的应用</h1>
-<blockquote>
-<p>aiohttp是一个异步库，分为客户端和服务端，下面只是简单对客户端做个介绍以及一个经常遇到的异常情况。aiohttp客户端为异步网络请求库</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">aiohttp</span>
-
-<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_http</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
-            <span class="k">global</span> <span class="n">count</span>
-            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;ch=&amp;tn=baiduerr&amp;bar=&amp;wd=</span><span class="si">{0}</span><span class="s1">&#39;</span>
-    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_http</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
-</code></pre></div>
-
-
-<p>aiohttp并发量太大的异常解决方案
-在使用aiohttp客户端进行大量并发请求时，程序会抛出 ValueError: too many file descriptors in select() 的错误。</p>
-<p>异常代码示例</p>
-<p>说明：测试机器为windows系统</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">aiohttp</span>
-
-<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_http</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
-            <span class="k">global</span> <span class="n">count</span>
-            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;ch=&amp;tn=baiduerr&amp;bar=&amp;wd=</span><span class="si">{0}</span><span class="s1">&#39;</span>
-    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_http</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">600</span><span class="p">)]</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
-</code></pre></div>
-
-
-<p>原因分析：使用aiohttp时，python内部会使用select()，操作系统对文件描述符最大数量有限制，linux为1024个，windows为509个。</p>
-<p>解决方案：</p>
-<p>最常见的解决方案是：限制并发数量（一般500），若并发的量不大可不作限制。其他方案这里不做介绍，如windows下使用loop = asyncio.ProactorEventLoop() 以及使用回调方式等</p>
-<p>限制并发数量方法
-提示：此方法也可用来作为异步爬虫的限速方法（反反爬）</p>
-<p>使用semaphore = asyncio.Semaphore(500) 以及在协程中使用 async with semaphore: 操作</p>
-<p>具体代码如下：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">aiohttp</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">get_http</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">semaphore</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
-                <span class="k">global</span> <span class="n">count</span>
-                <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="n">semaphore</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;ch=&amp;tn=baiduerr&amp;bar=&amp;wd=</span><span class="si">{0}</span><span class="s1">&#39;</span>
-    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_http</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">600</span><span class="p">)]</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">tasks</span><span class="p">))</span>
-    <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-
-
-<h1>在线程或进程池中执行代码</h1>
-<p>在《流畅的python》中有这样一段话。</p>
-<blockquote>
-<p>函数(例如io读写，requests网络请求)阻塞了客户代码与asycio事件循环的唯一线程，因此在执行调用时，整个应用程序都会冻结。这个问题的解决方法是，使用事件循环对象的 run_in_executor方法。asyncio的事件循环在背后维护着一个ThreadPoolExecutor对象，我们可以调用run_in_executor方法，把可调用对象发给它执行。</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">strftime</span>
-<span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
-
-<span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">blocked_sleep</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;[%H:%M:%S]&#39;</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sleep </span><span class="si">{}</span><span class="s1"> is running </span><span class="si">{}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-    <span class="k">await</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="n">executor</span><span class="p">,</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;[%H:%M:%S]&#39;</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;sleep </span><span class="si">{}</span><span class="s1"> is end&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">t</span>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">future</span> <span class="o">=</span> <span class="p">(</span><span class="n">blocked_sleep</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">fs</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">future</span><span class="p">)</span>
-    <span class="k">return</span> <span class="k">await</span> <span class="n">fs</span>
-
-
-<span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;results: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
-</code></pre></div>
-
-
-<p>在同一个线程里，两个 event loop 无法同时 run，但这不能阻止您用两个线程分别跑两个 event loop,
-其次再说 ThreadPoolExecutor。您也可以看到，它根本不是 asyncio 库的东西。当您创建一个 ThreadPoolExecutor 对象时，您实际上是创建了一个线程池。仅此而已，与 asyncio、event loop 并无瓜葛。而当您明确使用一个 event loop 的 run_in_executor() 方法时，其实底层做的只有两件事：</p>
-<p>1,用线程池执行给定函数，与 asyncio 毫无关系；
-2,给线程池执行结果增加一个回调，该回调会在 event loop 的下一次循环中保存执行结果。
-所以 run_in_executor() 只是将传统的线程池结果拉回到给定 event loop 中，以便进一步处理而已，不存在谁共享谁的关系，指定谁是谁。您可以尝试一下，在多个线程中跑多个 event loop，然后都向同一个线程池扔任务，然后返回结果：</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">concurrent.futures.thread</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
-
-<span class="n">e</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;before:&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">))</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;after:&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">index</span>
-
-
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
-    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">worker</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Thread&#39;</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="s1">&#39;got result&#39;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
-
-
-<span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">main</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="p">,))</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-    <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">threads</span><span class="p">:</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-</code></pre></div>
-
-
-<p>不同于上面的方法，这里是把阻塞的方法放到新的线程里跑。</p>
-<h2>参考引用</h2>
-<p><a href="https://cuiqingcai.com/6160.html">Python中异步协程的使用方法介绍：崔庆才</a>
-<a href="https://zhuanlan.zhihu.com/p/59621713">Python中协程异步IO（asyncio）详解</a>
-<a href="https://www.jb51.net/article/148926.htm">Python中asyncio与aiohttp入门教程</a>
-<a href="https://www.cnblogs.com/zhaof/p/8490045.html">python中重要的模块--asyncio</a>
-<a href="http://python-online.cn/zh_CN/latest/c02/c02_10.html"> MING's BLOG</a>
-<a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html">官方文档中文</a></p>
-            </div>
-            <!-- /.entry-content -->
-        </article>
-    </section>
-
-        </div>
-        <div class="col-sm-3" id="sidebar">
-            <aside>
-<div id="aboutme">
-        <p>
-            <img width="100%" class="img-thumbnail" src="/images/flower.png"/>
-        </p>
-</div><!-- Sidebar -->
-<section class="well well-sm">
-  <ul class="list-group list-group-flush">
-
-<!-- Sidebar/Social -->
-<li class="list-group-item">
-  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-  <ul class="list-group" id="social">
-    <li class="list-group-item"><a href="http://106.55.162.109/"><i class="fa fa-django-chat-square fa-lg"></i> Django-chat</a></li>
-    <li class="list-group-item"><a href="https://github.com/xhongc"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-  </ul>
-</li>
-<!-- End Sidebar/Social -->
-
-<!-- Sidebar/Recent Posts -->
-<li class="list-group-item">
-  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
-  <ul class="list-group" id="recentposts">
-    <li class="list-group-item"><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></li>
-    <li class="list-group-item"><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a></li>
-    <li class="list-group-item"><a href="/asyncio_course.html">python协程库asyncio(异步io)</a></li>
-  </ul>
-</li>
-<!-- End Sidebar/Recent Posts -->
-
-<!-- Sidebar/Tag Cloud -->
-<li class="list-group-item">
-  <a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
-  <ul class="list-group " id="tags">
-    <li class="list-group-item tag-8">
-      <a href="/tag/pelican.html">pelican</a>
-    </li>
-    <li class="list-group-item tag-8">
-      <a href="/tag/github.html">github</a>
-    </li>
-    <li class="list-group-item tag-8">
-      <a href="/tag/python.html">python</a>
-    </li>
-  </ul>
-</li>
-<!-- End Sidebar/Tag Cloud -->
-  </ul>
-</section>
-<!-- End Sidebar -->            </aside>
-        </div>
-    </div>
-</div>
-<!-- End Content Container -->
-
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2020 charles
-            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="/theme/js/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/theme/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="/theme/js/respond.min.js"></script>
-
-
-    <script src="/theme/js/bodypadding.js"></script>
-
-
-</body>
-</html>
+<span class=k >async</span> <span class=k >def</span> <span class=nf >coro</span><span class=p >(</span><span class=n >tag</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;&gt;&quot;</span><span class=p >,</span> <span class=n >tag</span><span class=p >)</span>
+    <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=n >random</span><span class=o >.</span><span class=n >uniform</span><span class=p >(</span><span class=mf >0.5</span><span class=p >,</span> <span class=mi >5</span><span class=p >))</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;&lt;&quot;</span><span class=p >,</span> <span class=n >tag</span><span class=p >)</span>
+    <span class=k >return</span> <span class=n >tag</span>
+
+
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+
+<span class=n >tasks</span> <span class=o >=</span> <span class=p >[</span><span class=n >coro</span><span class=p >(</span><span class=n >i</span><span class=p >)</span> <span class=k >for</span> <span class=n >i</span> <span class=ow >in</span> <span class=nb >range</span><span class=p >(</span><span class=mi >1</span><span class=p >,</span> <span class=mi >11</span><span class=p >)]</span>
+
+<span class=c1 ># 第一次wait 完成情况</span>
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Get first result:&quot;</span><span class=p >)</span>
+<span class=n >finished</span><span class=p >,</span> <span class=n >unfinished</span> <span class=o >=</span> <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >,</span> <span class=n >return_when</span><span class=o >=</span><span class=n >asyncio</span><span class=o >.</span><span class=n >FIRST_COMPLETED</span><span class=p >))</span> <span class=c1 ># 第一个任务完全返回</span>
+
+<span class=k >for</span> <span class=n >task</span> <span class=ow >in</span> <span class=n >finished</span><span class=p >:</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >task</span><span class=o >.</span><span class=n >result</span><span class=p >())</span>
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;unfinished:&quot;</span><span class=p >,</span> <span class=nb >len</span><span class=p >(</span><span class=n >unfinished</span><span class=p >))</span>
+
+<span class=c1 ># 继续第一次未完成任务</span>
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Get more results in 2 seconds:&quot;</span><span class=p >)</span>
+<span class=n >finished2</span><span class=p >,</span> <span class=n >unfinished2</span> <span class=o >=</span> <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >unfinished</span><span class=p >,</span> <span class=n >timeout</span><span class=o >=</span><span class=mi >2</span><span class=p >))</span> <span class=c1 ># 超时2s 返回</span>
+
+<span class=k >for</span> <span class=n >task</span> <span class=ow >in</span> <span class=n >finished2</span><span class=p >:</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >task</span><span class=o >.</span><span class=n >result</span><span class=p >())</span>
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;unfinished2:&quot;</span><span class=p >,</span> <span class=nb >len</span><span class=p >(</span><span class=n >unfinished2</span><span class=p >))</span>
+
+<span class=c1 ># 继续第2次未完成任务</span>
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Get all other results:&quot;</span><span class=p >)</span>
+<span class=n >finished3</span><span class=p >,</span> <span class=n >unfinished3</span> <span class=o >=</span> <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >unfinished2</span><span class=p >))</span> <span class=c1 ># ALL_COMPLETED：所有任务完成返回 （默认项）</span>
+
+<span class=k >for</span> <span class=n >task</span> <span class=ow >in</span> <span class=n >finished3</span><span class=p >:</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >task</span><span class=o >.</span><span class=n >result</span><span class=p >())</span>
+
+<span class=n >loop</span><span class=o >.</span><span class=n >close</span><span class=p >()</span>
+</code></pre></div> <h1>动态添加协程</h1> <blockquote> <p>很多时候，我们的事件循环用于注册协程，而有的协程需要动态的添加到事件循环中。一个简单的方式就是使用多线程。当前线程创建一个事件循环，然后在新建一个线程，在新线程中启动事件循环。当前线程不会被block</p> </blockquote> <p>相关函数介绍：</p> <p>loop.call_soon_threadsafe() ：与 call_soon()类似，等待此函数返回后马上调用回调函数，返回值是一个 asyncio.Handle 对象，此对象内只有一个方法为 cancel()方法，用来取消回调函数。</p> <p>loop.call_soon() ： 与call_soon_threadsafe()类似，call_soon_threadsafe() 是线程安全的</p> <p>loop.call_later()：延迟多少秒后执行回调函数</p> <p>loop.call_at()：在指定时间执行回调函数，这里的时间统一使用 loop.time() 来替代 time.sleep()</p> <p>asyncio.run_coroutine_threadsafe()： 动态的加入协程，参数为一个回调函数和一个loop对象，返回值为future对象，通过future.result()获取回调函数返回值</p> <p>动态添加协程同步方式 通过调用 call_soon_threadsafe()函数，传入一个回调函数callback和一个位置参数</p> <p>注意：同步方式，回调函数 more_work()为普通函数</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >from</span> <span class=nn >threading</span> <span class=kn >import</span> <span class=n >Thread</span>
+<span class=kn >import</span> <span class=nn >time</span>
+
+<span class=n >now</span> <span class=o >=</span> <span class=k >lambda</span><span class=p >:</span> <span class=n >time</span><span class=o >.</span><span class=n >time</span><span class=p >()</span>
+
+
+<span class=k >def</span> <span class=nf >start_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >):</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >set_event_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >)</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_forever</span><span class=p >()</span>
+
+
+<span class=k >def</span> <span class=nf >more_work</span><span class=p >(</span><span class=n >x</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;More work </span><span class=si >{}</span><span class=s1 >&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >x</span><span class=p >))</span>
+    <span class=n >time</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=n >x</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;Finished more work </span><span class=si >{}</span><span class=s1 >&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >x</span><span class=p >))</span>
+
+
+<span class=n >start</span> <span class=o >=</span> <span class=n >now</span><span class=p >()</span>
+<span class=n >new_loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >new_event_loop</span><span class=p >()</span>
+<span class=n >t</span> <span class=o >=</span> <span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span><span class=n >start_loop</span><span class=p >,</span> <span class=n >args</span><span class=o >=</span><span class=p >(</span><span class=n >new_loop</span><span class=p >,))</span>
+<span class=n >t</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;TIME: </span><span class=si >{}</span><span class=s1 >&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >time</span><span class=o >.</span><span class=n >time</span><span class=p >()</span> <span class=o >-</span> <span class=n >start</span><span class=p >))</span>
+
+<span class=n >new_loop</span><span class=o >.</span><span class=n >call_soon_threadsafe</span><span class=p >(</span><span class=n >more_work</span><span class=p >,</span> <span class=mi >6</span><span class=p >)</span>
+<span class=n >new_loop</span><span class=o >.</span><span class=n >call_soon_threadsafe</span><span class=p >(</span><span class=n >more_work</span><span class=p >,</span> <span class=mi >3</span><span class=p >)</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;here&#39;</span><span class=p >)</span>
+</code></pre></div> <p>启动上述代码之后，当前线程不会被block，新线程中会按照顺序执行call_soon_threadsafe方法注册的more_work方法， 后者因为time.sleep操作是同步阻塞的，因此运行完毕more_work需要大致6 + 3</p> <hr> <p>异步方式</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >time</span>
+<span class=kn >from</span> <span class=nn >threading</span> <span class=kn >import</span> <span class=n >Thread</span>
+
+<span class=n >now</span> <span class=o >=</span> <span class=k >lambda</span><span class=p >:</span> <span class=n >time</span><span class=o >.</span><span class=n >time</span><span class=p >()</span>
+
+
+<span class=k >def</span> <span class=nf >start_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >):</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >set_event_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >)</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_forever</span><span class=p >()</span>
+
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >do_some_work</span><span class=p >(</span><span class=n >x</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;Waiting </span><span class=si >{}</span><span class=s1 >&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >x</span><span class=p >))</span>
+    <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=n >x</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;Done after </span><span class=si >{}</span><span class=s1 >s&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >x</span><span class=p >))</span>
+
+
+<span class=n >start</span> <span class=o >=</span> <span class=n >now</span><span class=p >()</span>
+<span class=n >new_loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >new_event_loop</span><span class=p >()</span>
+<span class=n >t</span> <span class=o >=</span> <span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span><span class=n >start_loop</span><span class=p >,</span> <span class=n >args</span><span class=o >=</span><span class=p >(</span><span class=n >new_loop</span><span class=p >,))</span>
+<span class=n >t</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;TIME: </span><span class=si >{}</span><span class=s1 >&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >time</span><span class=o >.</span><span class=n >time</span><span class=p >()</span> <span class=o >-</span> <span class=n >start</span><span class=p >))</span>
+
+<span class=n >asyncio</span><span class=o >.</span><span class=n >run_coroutine_threadsafe</span><span class=p >(</span><span class=n >do_some_work</span><span class=p >(</span><span class=mi >6</span><span class=p >),</span> <span class=n >new_loop</span><span class=p >)</span>
+<span class=n >asyncio</span><span class=o >.</span><span class=n >run_coroutine_threadsafe</span><span class=p >(</span><span class=n >do_some_work</span><span class=p >(</span><span class=mi >4</span><span class=p >),</span> <span class=n >new_loop</span><span class=p >)</span>
+</code></pre></div> <p>上述的例子，主线程中创建一个new_loop，然后在另外的子线程中开启一个无限事件循环。 主线程通过run_coroutine_threadsafe新注册协程对象。这样就能在子线程中进行事件循环的并发操作，同时主线程又不会被block。一共执行的时间大概在6s左右。</p> <h1>协程的停止</h1> <p>future对象有几个状态：</p> <p>Pending Running Done Cacelled 创建future的时候，task为pending，事件循环调用执行的时候当然就是running，调用完毕自然就是done，如果需要停止事件循环，就需要先把task取消。可以使用asyncio.Task获取事件循环的task</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >time</span>
+
+<span class=n >now</span> <span class=o >=</span> <span class=k >lambda</span><span class=p >:</span> <span class=n >time</span><span class=o >.</span><span class=n >time</span><span class=p >()</span>
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >do_some_work</span><span class=p >(</span><span class=n >x</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Waiting:&quot;</span><span class=p >,</span> <span class=n >x</span><span class=p >)</span>
+    <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=n >x</span><span class=p >)</span>
+    <span class=k >return</span> <span class=s2 >&quot;Done after </span><span class=si >{}</span><span class=s2 >s&quot;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >x</span><span class=p >)</span>
+
+
+<span class=n >coroutine1</span> <span class=o >=</span> <span class=n >do_some_work</span><span class=p >(</span><span class=mi >1</span><span class=p >)</span>
+<span class=n >coroutine2</span> <span class=o >=</span> <span class=n >do_some_work</span><span class=p >(</span><span class=mi >2</span><span class=p >)</span>
+<span class=n >coroutine3</span> <span class=o >=</span> <span class=n >do_some_work</span><span class=p >(</span><span class=mi >2</span><span class=p >)</span>
+
+<span class=n >tasks</span> <span class=o >=</span> <span class=p >[</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine1</span><span class=p >),</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine2</span><span class=p >),</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >ensure_future</span><span class=p >(</span><span class=n >coroutine3</span><span class=p >),</span>
+<span class=p >]</span>
+
+<span class=n >start</span> <span class=o >=</span> <span class=n >now</span><span class=p >()</span>
+
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=k >try</span><span class=p >:</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+<span class=k >except</span> <span class=ne >KeyboardInterrupt</span> <span class=k >as</span> <span class=n >e</span><span class=p >:</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >Task</span><span class=o >.</span><span class=n >all_tasks</span><span class=p >())</span>
+    <span class=k >for</span> <span class=n >task</span> <span class=ow >in</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >Task</span><span class=o >.</span><span class=n >all_tasks</span><span class=p >():</span>
+        <span class=nb >print</span><span class=p >(</span><span class=n >task</span><span class=o >.</span><span class=n >cancel</span><span class=p >())</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >stop</span><span class=p >()</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_forever</span><span class=p >()</span>
+<span class=k >finally</span><span class=p >:</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >close</span><span class=p >()</span>
+
+<span class=nb >print</span><span class=p >(</span><span class=s2 >&quot;Time:&quot;</span><span class=p >,</span> <span class=n >now</span><span class=p >()</span> <span class=o >-</span> <span class=n >start</span><span class=p >)</span>
+</code></pre></div> <p>启动事件循环之后，马上ctrl+c，会触发run_until_complete的执行异常 KeyBorardInterrupt。然后通过循环asyncio.Task取消future。 True表示cannel成功，loop stop之后还需要再次开启事件循环，最后在close，不然还会抛出异常 循环task，逐个cancel是一种方案，可是正如上面我们把task的列表封装在main函数中，main函数外进行事件循环的调用。这个时候，main相当于最外出的一个task，那么处理包装的main函数即可。</p> <h1>协程中生产-消费模型设计</h1> <blockquote> <p>通过上面的动态添加协程的思想，我们可以设计一个生产-消费的模型，至于中间件（管道）是什么无所谓，下面以内置队列和redis队列来举例说明。</p> </blockquote> <p>提示：若想主线程退出时，子线程也随之退出，需要将子线程设置为守护线程，函数 setDaemon(True)</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >from</span> <span class=nn >threading</span> <span class=kn >import</span> <span class=n >Thread</span>
+<span class=kn >from</span> <span class=nn >collections</span> <span class=kn >import</span> <span class=n >deque</span>
+<span class=kn >import</span> <span class=nn >random</span>
+<span class=kn >import</span> <span class=nn >time</span>
+
+<span class=k >def</span> <span class=nf >start_thread_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >):</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >set_event_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >)</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_forever</span><span class=p >()</span>
+
+<span class=k >def</span> <span class=nf >consumer</span><span class=p >():</span>
+    <span class=k >while</span> <span class=kc >True</span><span class=p >:</span>
+        <span class=k >if</span> <span class=n >dq</span><span class=p >:</span>
+            <span class=n >msg</span> <span class=o >=</span> <span class=n >dq</span><span class=o >.</span><span class=n >pop</span><span class=p >()</span>
+            <span class=k >if</span> <span class=n >msg</span><span class=p >:</span>
+                <span class=n >asyncio</span><span class=o >.</span><span class=n >run_coroutine_threadsafe</span><span class=p >(</span><span class=n >thread_example</span><span class=p >(</span><span class=s1 >&#39;Zarten&#39;</span><span class=o >+</span> <span class=n >msg</span><span class=p >),</span> <span class=n >new_loop</span><span class=p >)</span>
+
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >thread_example</span><span class=p >(</span><span class=n >name</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;正在执行name:&#39;</span><span class=p >,</span> <span class=n >name</span><span class=p >)</span>
+    <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=mi >2</span><span class=p >)</span>
+    <span class=k >return</span> <span class=s1 >&#39;返回结果：&#39;</span> <span class=o >+</span> <span class=n >name</span>
+
+
+
+<span class=n >dq</span> <span class=o >=</span> <span class=n >deque</span><span class=p >()</span>
+
+<span class=n >new_loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >new_event_loop</span><span class=p >()</span>
+<span class=n >loop_thread</span> <span class=o >=</span> <span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span> <span class=n >start_thread_loop</span><span class=p >,</span> <span class=n >args</span><span class=o >=</span><span class=p >(</span><span class=n >new_loop</span><span class=p >,))</span>
+<span class=n >loop_thread</span><span class=o >.</span><span class=n >setDaemon</span><span class=p >(</span><span class=kc >True</span><span class=p >)</span>
+<span class=n >loop_thread</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+
+<span class=n >consumer_thread</span> <span class=o >=</span> <span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span> <span class=n >consumer</span><span class=p >)</span>
+<span class=n >consumer_thread</span><span class=o >.</span><span class=n >setDaemon</span><span class=p >(</span><span class=kc >True</span><span class=p >)</span>
+<span class=n >consumer_thread</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+
+<span class=k >while</span> <span class=kc >True</span><span class=p >:</span>
+    <span class=n >i</span> <span class=o >=</span> <span class=n >random</span><span class=o >.</span><span class=n >randint</span><span class=p >(</span><span class=mi >1</span><span class=p >,</span> <span class=mi >10</span><span class=p >)</span>
+    <span class=n >dq</span><span class=o >.</span><span class=n >appendleft</span><span class=p >(</span><span class=nb >str</span><span class=p >(</span><span class=n >i</span><span class=p >))</span>
+    <span class=n >time</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=mi >2</span><span class=p >)</span>
+</code></pre></div> <h3>redis队列模型</h3> <p>生产者代码：</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >redis</span>
+
+<span class=n >conn_pool</span> <span class=o >=</span> <span class=n >redis</span><span class=o >.</span><span class=n >ConnectionPool</span><span class=p >(</span><span class=n >host</span><span class=o >=</span><span class=s1 >&#39;127.0.0.1&#39;</span><span class=p >)</span>
+<span class=n >redis_conn</span> <span class=o >=</span> <span class=n >redis</span><span class=o >.</span><span class=n >Redis</span><span class=p >(</span><span class=n >connection_pool</span><span class=o >=</span><span class=n >conn_pool</span><span class=p >)</span>
+
+<span class=n >redis_conn</span><span class=o >.</span><span class=n >lpush</span><span class=p >(</span><span class=s1 >&#39;coro_test&#39;</span><span class=p >,</span> <span class=s1 >&#39;1&#39;</span><span class=p >)</span>
+<span class=n >redis_conn</span><span class=o >.</span><span class=n >lpush</span><span class=p >(</span><span class=s1 >&#39;coro_test&#39;</span><span class=p >,</span> <span class=s1 >&#39;2&#39;</span><span class=p >)</span>
+<span class=n >redis_conn</span><span class=o >.</span><span class=n >lpush</span><span class=p >(</span><span class=s1 >&#39;coro_test&#39;</span><span class=p >,</span> <span class=s1 >&#39;3&#39;</span><span class=p >)</span>
+<span class=n >redis_conn</span><span class=o >.</span><span class=n >lpush</span><span class=p >(</span><span class=s1 >&#39;coro_test&#39;</span><span class=p >,</span> <span class=s1 >&#39;4&#39;</span><span class=p >)</span>
+</code></pre></div> <p>消费者代码：</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >from</span> <span class=nn >threading</span> <span class=kn >import</span> <span class=n >Thread</span>
+<span class=kn >import</span> <span class=nn >redis</span>
+
+<span class=k >def</span> <span class=nf >get_redis</span><span class=p >():</span>
+    <span class=n >conn_pool</span> <span class=o >=</span> <span class=n >redis</span><span class=o >.</span><span class=n >ConnectionPool</span><span class=p >(</span><span class=n >host</span><span class=o >=</span> <span class=s1 >&#39;127.0.0.1&#39;</span><span class=p >)</span>
+    <span class=k >return</span> <span class=n >redis</span><span class=o >.</span><span class=n >Redis</span><span class=p >(</span><span class=n >connection_pool</span><span class=o >=</span> <span class=n >conn_pool</span><span class=p >)</span>
+
+<span class=k >def</span> <span class=nf >start_thread_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >):</span>
+    <span class=n >asyncio</span><span class=o >.</span><span class=n >set_event_loop</span><span class=p >(</span><span class=n >loop</span><span class=p >)</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_forever</span><span class=p >()</span>
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >thread_example</span><span class=p >(</span><span class=n >name</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;正在执行name:&#39;</span><span class=p >,</span> <span class=n >name</span><span class=p >)</span>
+    <span class=k >await</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=mi >2</span><span class=p >)</span>
+    <span class=k >return</span> <span class=s1 >&#39;返回结果：&#39;</span> <span class=o >+</span> <span class=n >name</span>
+
+
+<span class=n >redis_conn</span> <span class=o >=</span> <span class=n >get_redis</span><span class=p >()</span>
+
+<span class=n >new_loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >new_event_loop</span><span class=p >()</span>
+<span class=n >loop_thread</span> <span class=o >=</span> <span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span> <span class=n >start_thread_loop</span><span class=p >,</span> <span class=n >args</span><span class=o >=</span><span class=p >(</span><span class=n >new_loop</span><span class=p >,))</span>
+<span class=n >loop_thread</span><span class=o >.</span><span class=n >setDaemon</span><span class=p >(</span><span class=kc >True</span><span class=p >)</span>
+<span class=n >loop_thread</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+
+<span class=c1 >#循环接收redis消息并动态加入协程</span>
+<span class=k >while</span> <span class=kc >True</span><span class=p >:</span>
+    <span class=n >msg</span> <span class=o >=</span> <span class=n >redis_conn</span><span class=o >.</span><span class=n >rpop</span><span class=p >(</span><span class=s1 >&#39;coro_test&#39;</span><span class=p >)</span>
+    <span class=k >if</span> <span class=n >msg</span><span class=p >:</span>
+        <span class=n >asyncio</span><span class=o >.</span><span class=n >run_coroutine_threadsafe</span><span class=p >(</span><span class=n >thread_example</span><span class=p >(</span><span class=s1 >&#39;Zarten&#39;</span> <span class=o >+</span> <span class=nb >bytes</span><span class=o >.</span><span class=n >decode</span><span class=p >(</span><span class=n >msg</span><span class=p >,</span> <span class=s1 >&#39;utf-8&#39;</span><span class=p >)),</span> <span class=n >new_loop</span><span class=p >)</span>
+</code></pre></div> <h1>asyncio在aiohttp中的应用</h1> <blockquote> <p>aiohttp是一个异步库，分为客户端和服务端，下面只是简单对客户端做个介绍以及一个经常遇到的异常情况。aiohttp客户端为异步网络请求库</p> </blockquote> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >aiohttp</span>
+
+<span class=n >count</span> <span class=o >=</span> <span class=mi >0</span>
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >get_http</span><span class=p >(</span><span class=n >url</span><span class=p >):</span>
+    <span class=k >async</span> <span class=k >with</span> <span class=n >aiohttp</span><span class=o >.</span><span class=n >ClientSession</span><span class=p >()</span> <span class=k >as</span> <span class=n >session</span><span class=p >:</span>
+        <span class=k >async</span> <span class=k >with</span> <span class=n >session</span><span class=o >.</span><span class=n >get</span><span class=p >(</span><span class=n >url</span><span class=p >)</span> <span class=k >as</span> <span class=n >res</span><span class=p >:</span>
+            <span class=k >global</span> <span class=n >count</span>
+            <span class=n >count</span> <span class=o >+=</span> <span class=mi >1</span>
+            <span class=nb >print</span><span class=p >(</span><span class=n >count</span><span class=p >,</span> <span class=n >res</span><span class=o >.</span><span class=n >status</span><span class=p >)</span>
+
+<span class=k >def</span> <span class=nf >main</span><span class=p >():</span>
+    <span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+    <span class=n >url</span> <span class=o >=</span> <span class=s1 >&#39;https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;ch=&amp;tn=baiduerr&amp;bar=&amp;wd=</span><span class=si >{0}</span><span class=s1 >&#39;</span>
+    <span class=n >tasks</span> <span class=o >=</span> <span class=p >[</span><span class=n >get_http</span><span class=p >(</span><span class=n >url</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >i</span><span class=p >))</span> <span class=k >for</span> <span class=n >i</span> <span class=ow >in</span> <span class=nb >range</span><span class=p >(</span><span class=mi >10</span><span class=p >)]</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >close</span><span class=p >()</span>
+<span class=k >if</span> <span class=vm >__name__</span> <span class=o >==</span> <span class=s1 >&#39;__main__&#39;</span><span class=p >:</span>
+    <span class=n >main</span><span class=p >()</span>
+</code></pre></div> <p>aiohttp并发量太大的异常解决方案 在使用aiohttp客户端进行大量并发请求时，程序会抛出 ValueError: too many file descriptors in select() 的错误。</p> <p>异常代码示例</p> <p>说明：测试机器为windows系统</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >aiohttp</span>
+
+<span class=n >count</span> <span class=o >=</span> <span class=mi >0</span>
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >get_http</span><span class=p >(</span><span class=n >url</span><span class=p >):</span>
+    <span class=k >async</span> <span class=k >with</span> <span class=n >aiohttp</span><span class=o >.</span><span class=n >ClientSession</span><span class=p >()</span> <span class=k >as</span> <span class=n >session</span><span class=p >:</span>
+        <span class=k >async</span> <span class=k >with</span> <span class=n >session</span><span class=o >.</span><span class=n >get</span><span class=p >(</span><span class=n >url</span><span class=p >)</span> <span class=k >as</span> <span class=n >res</span><span class=p >:</span>
+            <span class=k >global</span> <span class=n >count</span>
+            <span class=n >count</span> <span class=o >+=</span> <span class=mi >1</span>
+            <span class=nb >print</span><span class=p >(</span><span class=n >count</span><span class=p >,</span> <span class=n >res</span><span class=o >.</span><span class=n >status</span><span class=p >)</span>
+
+<span class=k >def</span> <span class=nf >main</span><span class=p >():</span>
+    <span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+    <span class=n >url</span> <span class=o >=</span> <span class=s1 >&#39;https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;ch=&amp;tn=baiduerr&amp;bar=&amp;wd=</span><span class=si >{0}</span><span class=s1 >&#39;</span>
+    <span class=n >tasks</span> <span class=o >=</span> <span class=p >[</span><span class=n >get_http</span><span class=p >(</span><span class=n >url</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >i</span><span class=p >))</span> <span class=k >for</span> <span class=n >i</span> <span class=ow >in</span> <span class=nb >range</span><span class=p >(</span><span class=mi >600</span><span class=p >)]</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >close</span><span class=p >()</span>
+<span class=k >if</span> <span class=vm >__name__</span> <span class=o >==</span> <span class=s1 >&#39;__main__&#39;</span><span class=p >:</span>
+    <span class=n >main</span><span class=p >()</span>
+</code></pre></div> <p>原因分析：使用aiohttp时，python内部会使用select()，操作系统对文件描述符最大数量有限制，linux为1024个，windows为509个。</p> <p>解决方案：</p> <p>最常见的解决方案是：限制并发数量（一般500），若并发的量不大可不作限制。其他方案这里不做介绍，如windows下使用loop = asyncio.ProactorEventLoop() 以及使用回调方式等</p> <p>限制并发数量方法 提示：此方法也可用来作为异步爬虫的限速方法（反反爬）</p> <p>使用semaphore = asyncio.Semaphore(500) 以及在协程中使用 async with semaphore: 操作</p> <p>具体代码如下：</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >aiohttp</span>
+
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >get_http</span><span class=p >(</span><span class=n >url</span><span class=p >):</span>
+    <span class=k >async</span> <span class=k >with</span> <span class=n >semaphore</span><span class=p >:</span>
+        <span class=k >async</span> <span class=k >with</span> <span class=n >aiohttp</span><span class=o >.</span><span class=n >ClientSession</span><span class=p >()</span> <span class=k >as</span> <span class=n >session</span><span class=p >:</span>
+            <span class=k >async</span> <span class=k >with</span> <span class=n >session</span><span class=o >.</span><span class=n >get</span><span class=p >(</span><span class=n >url</span><span class=p >)</span> <span class=k >as</span> <span class=n >res</span><span class=p >:</span>
+                <span class=k >global</span> <span class=n >count</span>
+                <span class=n >count</span> <span class=o >+=</span> <span class=mi >1</span>
+                <span class=nb >print</span><span class=p >(</span><span class=n >count</span><span class=p >,</span> <span class=n >res</span><span class=o >.</span><span class=n >status</span><span class=p >)</span>
+
+<span class=k >if</span> <span class=vm >__name__</span> <span class=o >==</span> <span class=s1 >&#39;__main__&#39;</span><span class=p >:</span>
+    <span class=n >count</span> <span class=o >=</span> <span class=mi >0</span>
+
+    <span class=n >semaphore</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >Semaphore</span><span class=p >(</span><span class=mi >500</span><span class=p >)</span>
+    <span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+    <span class=n >url</span> <span class=o >=</span> <span class=s1 >&#39;https://www.baidu.com/s?ie=utf-8&amp;f=8&amp;rsv_bp=1&amp;ch=&amp;tn=baiduerr&amp;bar=&amp;wd=</span><span class=si >{0}</span><span class=s1 >&#39;</span>
+    <span class=n >tasks</span> <span class=o >=</span> <span class=p >[</span><span class=n >get_http</span><span class=p >(</span><span class=n >url</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >i</span><span class=p >))</span> <span class=k >for</span> <span class=n >i</span> <span class=ow >in</span> <span class=nb >range</span><span class=p >(</span><span class=mi >600</span><span class=p >)]</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >asyncio</span><span class=o >.</span><span class=n >wait</span><span class=p >(</span><span class=n >tasks</span><span class=p >))</span>
+    <span class=n >loop</span><span class=o >.</span><span class=n >close</span><span class=p >()</span>
+</code></pre></div> <h1>在线程或进程池中执行代码</h1> <p>在《流畅的python》中有这样一段话。</p> <blockquote> <p>函数(例如io读写，requests网络请求)阻塞了客户代码与asycio事件循环的唯一线程，因此在执行调用时，整个应用程序都会冻结。这个问题的解决方法是，使用事件循环对象的 run_in_executor方法。asyncio的事件循环在背后维护着一个ThreadPoolExecutor对象，我们可以调用run_in_executor方法，把可调用对象发给它执行。</p> </blockquote> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >from</span> <span class=nn >time</span> <span class=kn >import</span> <span class=n >sleep</span><span class=p >,</span> <span class=n >strftime</span>
+<span class=kn >from</span> <span class=nn >concurrent</span> <span class=kn >import</span> <span class=n >futures</span>
+
+<span class=n >executor</span> <span class=o >=</span> <span class=n >futures</span><span class=o >.</span><span class=n >ThreadPoolExecutor</span><span class=p >(</span><span class=n >max_workers</span><span class=o >=</span><span class=mi >5</span><span class=p >)</span>
+
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >blocked_sleep</span><span class=p >(</span><span class=n >name</span><span class=p >,</span> <span class=n >t</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >strftime</span><span class=p >(</span><span class=s1 >&#39;[%H:%M:%S]&#39;</span><span class=p >),</span> <span class=n >end</span><span class=o >=</span><span class=s1 >&#39; &#39;</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;sleep </span><span class=si >{}</span><span class=s1 > is running </span><span class=si >{}</span><span class=s1 >s&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >name</span><span class=p >,</span> <span class=n >t</span><span class=p >))</span>
+    <span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+    <span class=k >await</span> <span class=n >loop</span><span class=o >.</span><span class=n >run_in_executor</span><span class=p >(</span><span class=n >executor</span><span class=p >,</span> <span class=n >sleep</span><span class=p >,</span> <span class=n >t</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >strftime</span><span class=p >(</span><span class=s1 >&#39;[%H:%M:%S]&#39;</span><span class=p >),</span> <span class=n >end</span><span class=o >=</span><span class=s1 >&#39; &#39;</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;sleep </span><span class=si >{}</span><span class=s1 > is end&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >name</span><span class=p >))</span>
+    <span class=k >return</span> <span class=n >t</span>
+
+
+<span class=k >async</span> <span class=k >def</span> <span class=nf >main</span><span class=p >():</span>
+    <span class=n >future</span> <span class=o >=</span> <span class=p >(</span><span class=n >blocked_sleep</span><span class=p >(</span><span class=n >i</span><span class=p >,</span> <span class=n >i</span><span class=p >)</span> <span class=k >for</span> <span class=n >i</span> <span class=ow >in</span> <span class=nb >range</span><span class=p >(</span><span class=mi >1</span><span class=p >,</span> <span class=mi >6</span><span class=p >))</span>
+    <span class=n >fs</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >gather</span><span class=p >(</span><span class=o >*</span><span class=n >future</span><span class=p >)</span>
+    <span class=k >return</span> <span class=k >await</span> <span class=n >fs</span>
+
+
+<span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >get_event_loop</span><span class=p >()</span>
+<span class=n >results</span> <span class=o >=</span> <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >main</span><span class=p >())</span>
+<span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;results: </span><span class=si >{}</span><span class=s1 >&#39;</span><span class=o >.</span><span class=n >format</span><span class=p >(</span><span class=n >results</span><span class=p >))</span>
+</code></pre></div> <p>在同一个线程里，两个 event loop 无法同时 run，但这不能阻止您用两个线程分别跑两个 event loop, 其次再说 ThreadPoolExecutor。您也可以看到，它根本不是 asyncio 库的东西。当您创建一个 ThreadPoolExecutor 对象时，您实际上是创建了一个线程池。仅此而已，与 asyncio、event loop 并无瓜葛。而当您明确使用一个 event loop 的 run_in_executor() 方法时，其实底层做的只有两件事：</p> <p>1,用线程池执行给定函数，与 asyncio 毫无关系； 2,给线程池执行结果增加一个回调，该回调会在 event loop 的下一次循环中保存执行结果。 所以 run_in_executor() 只是将传统的线程池结果拉回到给定 event loop 中，以便进一步处理而已，不存在谁共享谁的关系，指定谁是谁。您可以尝试一下，在多个线程中跑多个 event loop，然后都向同一个线程池扔任务，然后返回结果：</p> <div class=highlight ><pre><span></span><code><span class=kn >import</span> <span class=nn >asyncio</span>
+<span class=kn >import</span> <span class=nn >threading</span>
+<span class=kn >import</span> <span class=nn >time</span>
+<span class=kn >from</span> <span class=nn >concurrent.futures.thread</span> <span class=kn >import</span> <span class=n >ThreadPoolExecutor</span>
+
+<span class=n >e</span> <span class=o >=</span> <span class=n >ThreadPoolExecutor</span><span class=p >()</span>
+
+
+<span class=k >def</span> <span class=nf >worker</span><span class=p >(</span><span class=n >index</span><span class=p >):</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >index</span><span class=p >,</span> <span class=s1 >&#39;before:&#39;</span><span class=p >,</span> <span class=n >time</span><span class=o >.</span><span class=n >strftime</span><span class=p >(</span><span class=s1 >&#39;</span><span class=si >%X</span><span class=s1 >&#39;</span><span class=p >))</span>
+    <span class=n >time</span><span class=o >.</span><span class=n >sleep</span><span class=p >(</span><span class=mi >1</span><span class=p >)</span>
+    <span class=nb >print</span><span class=p >(</span><span class=n >index</span><span class=p >,</span> <span class=s1 >&#39;after:&#39;</span><span class=p >,</span> <span class=n >time</span><span class=o >.</span><span class=n >strftime</span><span class=p >(</span><span class=s1 >&#39;</span><span class=si >%X</span><span class=s1 >&#39;</span><span class=p >))</span>
+    <span class=k >return</span> <span class=n >index</span>
+
+
+<span class=k >def</span> <span class=nf >main</span><span class=p >(</span><span class=n >index</span><span class=p >):</span>
+    <span class=n >loop</span> <span class=o >=</span> <span class=n >asyncio</span><span class=o >.</span><span class=n >new_event_loop</span><span class=p >()</span>
+    <span class=n >res</span> <span class=o >=</span> <span class=n >loop</span><span class=o >.</span><span class=n >run_until_complete</span><span class=p >(</span><span class=n >loop</span><span class=o >.</span><span class=n >run_in_executor</span><span class=p >(</span><span class=n >e</span><span class=p >,</span> <span class=n >worker</span><span class=p >,</span> <span class=n >index</span><span class=p >))</span>
+    <span class=nb >print</span><span class=p >(</span><span class=s1 >&#39;Thread&#39;</span><span class=p >,</span> <span class=n >index</span><span class=p >,</span> <span class=s1 >&#39;got result&#39;</span><span class=p >,</span> <span class=n >res</span><span class=p >)</span>
+
+
+<span class=n >threads</span> <span class=o >=</span> <span class=p >[]</span>
+<span class=k >for</span> <span class=n >i</span> <span class=ow >in</span> <span class=nb >range</span><span class=p >(</span><span class=mi >5</span><span class=p >):</span>
+    <span class=n >t</span> <span class=o >=</span> <span class=n >threading</span><span class=o >.</span><span class=n >Thread</span><span class=p >(</span><span class=n >target</span><span class=o >=</span><span class=n >main</span><span class=p >,</span> <span class=n >args</span><span class=o >=</span><span class=p >(</span><span class=n >i</span><span class=p >,))</span>
+    <span class=n >t</span><span class=o >.</span><span class=n >start</span><span class=p >()</span>
+    <span class=n >threads</span><span class=o >.</span><span class=n >append</span><span class=p >(</span><span class=n >t</span><span class=p >)</span>
+
+<span class=k >for</span> <span class=n >t</span> <span class=ow >in</span> <span class=n >threads</span><span class=p >:</span>
+    <span class=n >t</span><span class=o >.</span><span class=n >join</span><span class=p >()</span>
+</code></pre></div> <p>不同于上面的方法，这里是把阻塞的方法放到新的线程里跑。</p> <h2>参考引用</h2> <p><a href="https://cuiqingcai.com/6160.html">Python中异步协程的使用方法介绍：崔庆才</a> <a href="https://zhuanlan.zhihu.com/p/59621713">Python中协程异步IO（asyncio）详解</a> <a href="https://www.jb51.net/article/148926.htm">Python中asyncio与aiohttp入门教程</a> <a href="https://www.cnblogs.com/zhaof/p/8490045.html">python中重要的模块--asyncio</a> <a href="http://python-online.cn/zh_CN/latest/c02/c02_10.html"> MING's BLOG</a> <a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html">官方文档中文</a></p> </div> </article> </section> </div> <div class=col-sm-3  id=sidebar > <aside> <div id=aboutme > <p> <img width="100%" class=img-thumbnail  src="/images/flower.png"/> </p> </div> <section class="well well-sm"> <ul class="list-group list-group-flush"> <li class=list-group-item > <h4><i class="fa fa-home fa-lg"></i><span class=icon-label >Social</span></h4> <ul class=list-group  id=social > <li class=list-group-item ><a href="http://106.55.162.109/"><i class="fa fa-django-chat-square fa-lg"></i> Django-chat</a> <li class=list-group-item ><a href="https://github.com/xhongc"><i class="fa fa-github-square fa-lg"></i> Github</a> </ul> <li class=list-group-item > <h4><i class="fa fa-home fa-lg"></i><span class=icon-label >Recent Posts</span></h4> <ul class=list-group  id=recentposts > <li class=list-group-item ><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a> <li class=list-group-item ><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a> <li class=list-group-item ><a href="/asyncio_course.html">python协程库asyncio(异步io)</a> </ul> <li class=list-group-item > <a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class=icon-label >Tags</span></h4></a> <ul class="list-group " id=tags > <li class="list-group-item tag-8"> <a href="/tag/github.html">github</a> <li class="list-group-item tag-8"> <a href="/tag/pelican.html">pelican</a> <li class="list-group-item tag-8"> <a href="/tag/python.html">python</a> </ul> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container > <hr> <div class=row > <div class=col-xs-10 >&copy; 2020 charles &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target=_blank >pelican-bootstrap3</a>, <a href="http://docs.getpelican.com/" target=_blank >Pelican</a>, <a href="http://getbootstrap.com" target=_blank >Bootstrap</a> </div> <div class=col-xs-2 ><p class=pull-right ><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div> </div> </div> </footer> <script src="/theme/js/jquery.min.js"></script> <script src="/theme/js/bootstrap.min.js"></script> <script src="/theme/js/respond.min.js"></script> <script src="/theme/js/bodypadding.js"></script>
