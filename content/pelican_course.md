@@ -3,9 +3,9 @@ date: 2020-07-12
 author: charles
 Tags: pelican
 Slug: pelican_course
+Category: python
 
-
-1每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。
+每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。
 ## 为什么使用 GitHub Pages
 - 首先它是完全免费，可以省下一笔服务费
 - 无须自己购买云服务进行搭建，只需按步骤一步步操作即可，即使你不懂他的技术细节；
@@ -103,3 +103,8 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 找到自己喜欢的pelican主题，[主题地址点我](https://github.com/getpelican/pelican-themes)
 3. 关于我
 这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。
+
+### 简化发布流程
+1. `make html` 自动执行 `pelican content -o output -s publishconf.py`
+2. `make serve` 启动本地服务 `127.0.0.1:8000`查看修改内容
+3. `make github` 自动施行 `ghp-import -m "Generate Pelican site" --no-jekyll -b master output`&`git push origin master`

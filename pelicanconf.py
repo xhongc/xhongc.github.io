@@ -33,3 +33,7 @@ DEFAULT_PAGINATION = 10
 DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+THEME = '/Users/xiehongchao/Downloads/pelican-themes-master/pelican-bootstrap3'
+JINJA_ENVIRONMENT = {'extensions': ['jinja2.ext.i18n']}
+PLUGIN_PATHS = ['/Users/xiehongchao/Downloads/pelican-plugins-master']
+PLUGINS = ['i18n_subsites']

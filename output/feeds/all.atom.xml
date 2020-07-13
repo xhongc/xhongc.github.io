@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-12T00:00:00+00:00</updated><entry><title>使用 Python 在 GitHub 上运行你的博客</title><link href="/pelican_course.html" rel="alternate"></link><published>2020-07-12T00:00:00+00:00</published><updated>2020-07-12T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-12:/pelican_course.html</id><summary type="html">&lt;p&gt;1每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-13T00:00:00+00:00</updated><entry><title>Github Pages不能自动更新</title><link href="/github_page_no_upgrade.html" rel="alternate"></link><published>2020-07-13T00:00:00+00:00</published><updated>2020-07-13T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-13:/github_page_no_upgrade.html</id><summary type="html">&lt;p&gt;刚刚往github pages的repository里提交了一篇文章后，却发现github pages的页面一直没有更新——看不到新提交的文章。网上搜了一些资料，最后解决了这个问题。&lt;/p&gt;
+&lt;p&gt;一般来说，只要你的github pages repository有新的提交，github的服务器就会运行jekyll编译你的repository（延时很小）。如果编译出错，那么你的github pages页面是不会更新的；同时，github也会给你发一封提醒邮件，大致内容如下，&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="n"&gt;failed&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="ss"&gt;`master`&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Please&lt;/span&gt; &lt;span class="n"&gt;try&lt;/span&gt; &lt;span class="n"&gt;again&lt;/span&gt; &lt;span class="n"&gt;later&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+
+&lt;span class="k"&gt;For&lt;/span&gt; &lt;span class="n"&gt;information&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt; &lt;span class="n"&gt;troubleshooting&lt;/span&gt; &lt;span class="n"&gt;Jekyll&lt;/span&gt; &lt;span class="n"&gt;see&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+  &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;help&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;articles …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;刚刚往github pages的repository里提交了一篇文章后，却发现github pages的页面一直没有更新——看不到新提交的文章。网上搜了一些资料，最后解决了这个问题。&lt;/p&gt;
+&lt;p&gt;一般来说，只要你的github pages repository有新的提交，github的服务器就会运行jekyll编译你的repository（延时很小）。如果编译出错，那么你的github pages页面是不会更新的；同时，github也会给你发一封提醒邮件，大致内容如下，&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="n"&gt;failed&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="ss"&gt;`master`&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+&lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Please&lt;/span&gt; &lt;span class="n"&gt;try&lt;/span&gt; &lt;span class="n"&gt;again&lt;/span&gt; &lt;span class="n"&gt;later&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+
+&lt;span class="k"&gt;For&lt;/span&gt; &lt;span class="n"&gt;information&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt; &lt;span class="n"&gt;troubleshooting&lt;/span&gt; &lt;span class="n"&gt;Jekyll&lt;/span&gt; &lt;span class="n"&gt;see&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+
+  &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;help&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;articles&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;troubleshooting&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;jekyll&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;builds&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;给出的错误信息很有限，仅仅通知你编译出错。&lt;/p&gt;
+&lt;h3&gt;要找到出错的原因&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;首先确认下github pages服务有没有down掉或被降级；查看这个网址，&lt;a href="https://www.githubstatus.com/"&gt;https://www.githubstatus.com/&lt;/a&gt;，可以了解服务器的运行状态。&lt;/li&gt;
+&lt;li&gt;如果服务器运行良好，那么极有可能是提交的内容有错误。 可以在本地用jekyll编译一下repository，看看是否有错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;首先，更新一下本地的jekyll。github可能使用了较新版本的jekyll，所以即使你使用以前的本地jekyll编译没有问题，远端的jekyll编译时也可能出错。（当然，最好是保证本地和远端的jekyll版本一样。但是，还没有发现查看远端jekyll版本的方法。）&lt;/p&gt;
+&lt;p&gt;$ sudo gem install jekyll
+$ jekyll --version 然后，在本地编译你的repository。&lt;/p&gt;
+&lt;p&gt;$ jekyll build --safe jekyll --trace 给出的出错信息还是很详细的，能看出在什么位置发生了错误。
+查看错误信息并修改&lt;/p&gt;
+&lt;p&gt;我是正好遇到Github Pages 降级，等github修复后可以正常了&lt;/p&gt;</content><category term="python"></category><category term="github"></category></entry><entry><title>使用 Python 在 GitHub 上运行你的博客</title><link href="/pelican_course.html" rel="alternate"></link><published>2020-07-12T00:00:00+00:00</published><updated>2020-07-12T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-12:/pelican_course.html</id><summary type="html">&lt;p&gt;每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
 &lt;h2&gt;为什么使用 GitHub Pages&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;首先它是完全免费，可以省下一笔服务费&lt;/li&gt;
@@ -10,7 +41,7 @@
 &lt;h2&gt;Github中创建一个仓库&lt;/h2&gt;
 &lt;p&gt;选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io&lt;/p&gt;
 &lt;h2&gt;安装 Pelican&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;pip install pelican ghp-import …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;1每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pip install pelican ghp-import …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
 &lt;h2&gt;为什么使用 GitHub Pages&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;首先它是完全免费，可以省下一笔服务费&lt;/li&gt;
@@ -112,7 +143,13 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 2. 定制主题
 找到自己喜欢的pelican主题，&lt;a href="https://github.com/getpelican/pelican-themes"&gt;主题地址点我&lt;/a&gt;
 3. 关于我
-这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。&lt;/p&gt;</content><category term="misc"></category><category term="pelican"></category></entry><entry><title>python协程库asyncio (异步io)</title><link href="/asyncio_course.html" rel="alternate"></link><published>2019-07-19T00:00:00+00:00</published><updated>2019-07-19T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2019-07-19:/asyncio_course.html</id><summary type="html">&lt;h1&gt;介绍&lt;/h1&gt;
+这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。&lt;/p&gt;
+&lt;h3&gt;简化发布流程&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;make html&lt;/code&gt; 自动执行 &lt;code&gt;pelican content -o output -s publishconf.py&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;make serve&lt;/code&gt; 启动本地服务 &lt;code&gt;127.0.0.1:8000&lt;/code&gt;查看修改内容&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;make github&lt;/code&gt; 自动施行 &lt;code&gt;ghp-import -m "Generate Pelican site" --no-jekyll -b master output&lt;/code&gt;&amp;amp;&lt;code&gt;git push origin master&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><category term="python"></category><category term="pelican"></category></entry><entry><title>python协程库asyncio(异步io)</title><link href="/asyncio_course.html" rel="alternate"></link><published>2019-07-19T00:00:00+00:00</published><updated>2019-07-19T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2019-07-19:/asyncio_course.html</id><summary type="html">&lt;h1&gt;介绍&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;异步IO&lt;/strong&gt;：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
 &lt;strong&gt;协程&lt;/strong&gt;：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。&lt;/p&gt;
@@ -788,4 +825,4 @@ True表示cannel成功，loop stop之后还需要再次开启事件循环，最�
 &lt;a href="https://www.jb51.net/article/148926.htm"&gt;Python中asyncio与aiohttp入门教程&lt;/a&gt;
 &lt;a href="https://www.cnblogs.com/zhaof/p/8490045.html"&gt;python中重要的模块--asyncio&lt;/a&gt;
 &lt;a href="http://python-online.cn/zh_CN/latest/c02/c02_10.html"&gt; MING's BLOG&lt;/a&gt;
-&lt;a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html"&gt;官方文档中文&lt;/a&gt;&lt;/p&gt;</content><category term="misc"></category><category term="python"></category></entry></feed>
+&lt;a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html"&gt;官方文档中文&lt;/a&gt;&lt;/p&gt;</content><category term="python"></category><category term="python"></category></entry></feed>
