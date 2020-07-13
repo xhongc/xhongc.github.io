@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-12T00:00:00+00:00</updated><entry><title>使用 Python 在 GitHub 上运行你的博客</title><link href="/pelican_course.html" rel="alternate"></link><published>2020-07-12T00:00:00+00:00</published><updated>2020-07-12T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-12:/pelican_course.html</id><summary type="html">&lt;p&gt;每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-12T00:00:00+00:00</updated><entry><title>使用 Python 在 GitHub 上运行你的博客</title><link href="/pelican_course.html" rel="alternate"></link><published>2020-07-12T00:00:00+00:00</published><updated>2020-07-12T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-12:/pelican_course.html</id><summary type="html">&lt;p&gt;1每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
 &lt;h2&gt;为什么使用 GitHub Pages&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;首先它是完全免费，可以省下一笔服务费&lt;/li&gt;
@@ -10,7 +10,7 @@
 &lt;h2&gt;Github中创建一个仓库&lt;/h2&gt;
 &lt;p&gt;选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io&lt;/p&gt;
 &lt;h2&gt;安装 Pelican&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;pip install pelican ghp-import …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;pip install pelican ghp-import …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;1每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
 &lt;h2&gt;为什么使用 GitHub Pages&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;首先它是完全免费，可以省下一笔服务费&lt;/li&gt;
