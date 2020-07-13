@@ -112,7 +112,7 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 2. 定制主题
 找到自己喜欢的pelican主题，&lt;a href="https://github.com/getpelican/pelican-themes"&gt;主题地址点我&lt;/a&gt;
 3. 关于我
-这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。&lt;/p&gt;</content><category term="python"></category><category term="pelican"></category></entry><entry><title>最长共同子序列 (Longest Common SubsequenceLCS)</title><link href="/lcs.html" rel="alternate"></link><published>2020-06-29T00:00:00+00:00</published><updated>2020-06-29T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-06-29:/lcs.html</id><summary type="html">&lt;h3&gt;1. 最长共同子序列 (Longest Common Subsequence; LCS)&lt;/h3&gt;
+这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。&lt;/p&gt;</content><category term="python"></category><category term="pelican"></category></entry><entry><title>最长共同子序列(Longest Common SubsequenceLCS)</title><link href="/lcs.html" rel="alternate"></link><published>2020-06-29T00:00:00+00:00</published><updated>2020-06-29T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-06-29:/lcs.html</id><summary type="html">&lt;h3&gt;1. 最长共同子序列 (Longest Common Subsequence; LCS)&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;给定两个序列，找出两个序列中存在的最长子序列的长度。子序列是指以相同的相对顺序出现，但不一定是连续的序列 称为「&lt;strong&gt;最长共同子序列&lt;/strong&gt;」(&lt;em&gt;Longest Common Subsequence&lt;/em&gt;; LCS)」&lt;/p&gt;
