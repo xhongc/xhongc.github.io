@@ -112,7 +112,7 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 2. 定制主题
 找到自己喜欢的pelican主题，&lt;a href="https://github.com/getpelican/pelican-themes"&gt;主题地址点我&lt;/a&gt;
 3. 关于我
-这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。&lt;/p&gt;</content><category term="python"></category><category term="pelican"></category></entry><entry><title>python协程库asyncio (异步io)</title><link href="/asyncio_course.html" rel="alternate"></link><published>2019-07-19T00:00:00+00:00</published><updated>2019-07-19T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2019-07-19:/asyncio_course.html</id><summary type="html">&lt;h1&gt;介绍&lt;/h1&gt;
+这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。&lt;/p&gt;</content><category term="misc"></category><category term="pelican"></category></entry><entry><title>python协程库asyncio (异步io)</title><link href="/asyncio_course.html" rel="alternate"></link><published>2019-07-19T00:00:00+00:00</published><updated>2019-07-19T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2019-07-19:/asyncio_course.html</id><summary type="html">&lt;h1&gt;介绍&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;异步IO&lt;/strong&gt;：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
 &lt;strong&gt;协程&lt;/strong&gt;：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。&lt;/p&gt;
@@ -788,4 +788,4 @@ True表示cannel成功，loop stop之后还需要再次开启事件循环，最�
 &lt;a href="https://www.jb51.net/article/148926.htm"&gt;Python中asyncio与aiohttp入门教程&lt;/a&gt;
 &lt;a href="https://www.cnblogs.com/zhaof/p/8490045.html"&gt;python中重要的模块--asyncio&lt;/a&gt;
 &lt;a href="http://python-online.cn/zh_CN/latest/c02/c02_10.html"&gt; MING's BLOG&lt;/a&gt;
-&lt;a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html"&gt;官方文档中文&lt;/a&gt;&lt;/p&gt;</content><category term="python"></category><category term="python"></category></entry></feed>
+&lt;a href="https://docs.python.org/zh-cn/3/library/asyncio-eventloop.html"&gt;官方文档中文&lt;/a&gt;&lt;/p&gt;</content><category term="misc"></category><category term="python"></category></entry></feed>
