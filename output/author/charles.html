@@ -133,6 +133,52 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 3. 关于我
 这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。</p>                </article>
             </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/asyncio_course.html" rel="bookmark"
+                           title="Permalink to python协程库asyncio (异步io)">python协程库asyncio (异步io)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2019-07-19T00:00:00+00:00">
+                Published: 2019-07-19
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/charles.html">charles</a>
+        </address>
+<p>In <a href="/category/misc.html">misc</a>.</p>
+<p>tags: <a href="/tag/python.html">python</a> </p>
+</footer><!-- /.post-info -->                <h1>介绍</h1>
+<blockquote>
+<p><strong>异步IO</strong>：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
+<strong>协程</strong>：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。</p>
+</blockquote>
+<hr>
+<h4>asyncio中几个重要概念</h4>
+<h6>1.事件循环</h6>
+<p>事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。
+- 创建事件循环
+<code>loop = asyncio.get_event_loop()</code> 
+获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。</p>
+<ul>
+<li>另起一个线程创建事件循环</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="k">def</span> <span class="nf">start_thread_loop …</span></code></pre></div>
+                <a class="readmore" href="/asyncio_course.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>
