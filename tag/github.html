@@ -2,7 +2,7 @@
 <html lang="chinese (simplified)">
 <head>
         <meta charset="utf-8" />
-        <title>少年白</title>
+        <title>少年白 - github</title>
         <link rel="stylesheet" href="/theme/css/main.css" />
         <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="少年白 Atom Feed" />
 </head>
@@ -54,85 +54,6 @@ $ jekyll --version 然后，在本地编译你的repository。</p>
 查看错误信息并修改</p>
 <p>我是正好遇到Github Pages 降级，等github修复后可以正常了</p>                </article>
             </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/pelican_course.html" rel="bookmark"
-                           title="Permalink to 使用 Python 在 GitHub 上运行你的博客">使用 Python 在 GitHub 上运行你的博客</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2020-07-12T00:00:00+00:00">
-                Published: 2020-07-12
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/charles.html">charles</a>
-        </address>
-<p>In <a href="/category/python.html">python</a>.</p>
-<p>tags: <a href="/tag/pelican.html">pelican</a> </p>
-</footer><!-- /.post-info -->                <p>每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。</p>
-<h2>为什么使用 GitHub Pages</h2>
-<ul>
-<li>首先它是完全免费，可以省下一笔服务费</li>
-<li>无须自己购买云服务进行搭建，只需按步骤一步步操作即可，即使你不懂他的技术细节；</li>
-<li>支持的功能多，玩法丰富，你可以绑定你的域名、使用免费的 HTTPS、自己 DIY 网站的主题、使用他人开发好的插件等等</li>
-<li>当完成搭建后，你只需要专注于文章创作就可以了，其他诸如环境搭建、系统维护、文件存储的事情一概不用操心，都由 GitHub 处理</li>
-</ul>
-<h2>Github中创建一个仓库</h2>
-<p>选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io</p>
-<h2>安装 Pelican</h2>
-<p><code>pip install pelican ghp-import …</code></p>
-                <a class="readmore" href="/pelican_course.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="/asyncio_course.html" rel="bookmark"
-                           title="Permalink to python协程库asyncio(异步io)">python协程库asyncio(异步io)</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2019-07-19T00:00:00+00:00">
-                Published: 2019-07-19
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/charles.html">charles</a>
-        </address>
-<p>In <a href="/category/python.html">python</a>.</p>
-<p>tags: <a href="/tag/python.html">python</a> </p>
-</footer><!-- /.post-info -->                <h1>介绍</h1>
-<blockquote>
-<p><strong>异步IO</strong>：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
-<strong>协程</strong>：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。</p>
-</blockquote>
-<hr>
-<h4>asyncio中几个重要概念</h4>
-<h6>1.事件循环</h6>
-<p>事件循环是每个 asyncio 应用的核心，管理所有的事件，在整个程序运行过程中不断循环执行并追踪事件发生的顺序将它们放在队列中，空闲时调用相应的事件处理者来处理这些事件。
-- 创建事件循环
-<code>loop = asyncio.get_event_loop()</code> 
-获取当前事件循环。 如果当前 OS 线程没有设置当前事件循环并且 set_event_loop() 还没有被调用，asyncio 将创建一个新的事件循环并将其设置为当前循环。</p>
-<ul>
-<li>另起一个线程创建事件循环</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
-
-<span class="k">def</span> <span class="nf">start_thread_loop …</span></code></pre></div>
-                <a class="readmore" href="/asyncio_course.html">read more</a>
-                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>links</h2>

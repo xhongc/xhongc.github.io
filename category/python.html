@@ -18,7 +18,54 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a></h1>
+                    <h1 class="entry-title"><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2020-07-13T00:00:00+00:00">
+                Published: 2020-07-13
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/charles.html">charles</a>
+        </address>
+<p>In <a href="/category/python.html">python</a>.</p>
+<p>tags: <a href="/tag/github.html">github</a> </p>
+</footer><!-- /.post-info --><p>刚刚往github pages的repository里提交了一篇文章后，却发现github pages的页面一直没有更新——看不到新提交的文章。网上搜了一些资料，最后解决了这个问题。</p>
+<p>一般来说，只要你的github pages repository有新的提交，github的服务器就会运行jekyll编译你的repository（延时很小）。如果编译出错，那么你的github pages页面是不会更新的；同时，github也会给你发一封提醒邮件，大致内容如下，</p>
+<div class="highlight"><pre><span></span><code><span class="n">The</span> <span class="n">page</span> <span class="n">build</span> <span class="n">failed</span> <span class="k">for</span> <span class="n">the</span> <span class="ss">`master`</span> <span class="n">branch</span> <span class="k">with</span> <span class="n">the</span> <span class="n">following</span> <span class="n">error</span><span class="p">:</span>
+
+<span class="n">Unable</span> <span class="k">to</span> <span class="n">build</span> <span class="n">page</span><span class="p">.</span> <span class="n">Please</span> <span class="n">try</span> <span class="n">again</span> <span class="n">later</span><span class="p">.</span>
+
+<span class="k">For</span> <span class="n">information</span> <span class="k">on</span> <span class="n">troubleshooting</span> <span class="n">Jekyll</span> <span class="n">see</span><span class="p">:</span>
+
+  <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">help</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">articles</span><span class="o">/</span><span class="n">troubleshooting</span><span class="o">-</span><span class="n">jekyll</span><span class="o">-</span><span class="n">builds</span>
+</code></pre></div>
+
+
+<p>给出的错误信息很有限，仅仅通知你编译出错。</p>
+<h3>要找到出错的原因</h3>
+<ul>
+<li>首先确认下github pages服务有没有down掉或被降级；查看这个网址，<a href="https://www.githubstatus.com/">https://www.githubstatus.com/</a>，可以了解服务器的运行状态。</li>
+<li>如果服务器运行良好，那么极有可能是提交的内容有错误。 可以在本地用jekyll编译一下repository，看看是否有错误。</li>
+</ul>
+<p>首先，更新一下本地的jekyll。github可能使用了较新版本的jekyll，所以即使你使用以前的本地jekyll编译没有问题，远端的jekyll编译时也可能出错。（当然，最好是保证本地和远端的jekyll版本一样。但是，还没有发现查看远端jekyll版本的方法。）</p>
+<p>$ sudo gem install jekyll
+$ jekyll --version 然后，在本地编译你的repository。</p>
+<p>$ jekyll build --safe jekyll --trace 给出的出错信息还是很详细的，能看出在什么位置发生了错误。
+查看错误信息并修改</p>
+<p>我是正好遇到Github Pages 降级，等github修复后可以正常了</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/pelican_course.html" rel="bookmark"
+                           title="Permalink to 使用 Python 在 GitHub 上运行你的博客">使用 Python 在 GitHub 上运行你的博客</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2020-07-12T00:00:00+00:00">
                 Published: 2020-07-12
@@ -29,7 +76,7 @@
         </address>
 <p>In <a href="/category/python.html">python</a>.</p>
 <p>tags: <a href="/tag/pelican.html">pelican</a> </p>
-</footer><!-- /.post-info --><p>每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。</p>
+</footer><!-- /.post-info -->                <p>每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。</p>
 <h2>为什么使用 GitHub Pages</h2>
 <ul>
 <li>首先它是完全免费，可以省下一笔服务费</li>
@@ -40,109 +87,10 @@
 <h2>Github中创建一个仓库</h2>
 <p>选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io</p>
 <h2>安装 Pelican</h2>
-<p><code>pip install pelican ghp-import Markdown</code>
-将这个刚创建空 Git 仓库克隆到本地：
-<code>git clone &lt;https://GitHub.com/username/username.github.io&gt; blog</code>
-<code>cd blog</code></p>
-<h2>使用Pelican 生成静态页面</h2>
-<p>在 GitHub 上发布 Web 内容有一个不太引入注意的技巧，对于托管在名为 username.github.io 的仓库的用户页面，其内容由 master 分支提供服务。</p>
-<p>我强烈建议所有的 Pelican 配置文件和原始的 Markdown 文件都不要保留在 master 中，master 中只保留 Web 内容。因此，我将 Pelican 配置和原始内容保留在一个我喜欢称为 content 的单独分支中。（你可以随意创建一个分支，但以下内容沿用 content。）我喜欢这种结构，因为我可以放弃掉 master 中的所有文件，然后用 content 分支重新填充它。
-<code>git checkout -b content</code></p>
-<h3>配置Pelican</h3>
-<p>安装完Pelican 提供初始化工具 pelican-quickstart 来创建博客的初始配置</p>
-<div class="highlight"><pre><span></span><code><span class="err">$</span><span class="w"> </span><span class="n">pelican</span><span class="o">-</span><span class="n">quickstart</span><span class="w"></span>
-<span class="n">Welcome</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">pelican</span><span class="o">-</span><span class="n">quickstart</span><span class="w"> </span><span class="n">v3</span><span class="mf">.7.1</span><span class="p">.</span><span class="w"></span>
-
-<span class="n">This</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">help</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Pelican</span><span class="o">-</span><span class="n">based</span><span class="w"> </span><span class="n">website</span><span class="p">.</span><span class="w"></span>
-
-<span class="n">Please</span><span class="w"> </span><span class="n">answer</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">questions</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">files</span><span class="w"></span>
-<span class="n">needed</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">Pelican</span><span class="p">.</span><span class="w"></span>
-
-<span class="o">&gt;</span><span class="w"> </span><span class="k">Where</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">site</span><span class="vm">?</span><span class="w"> </span><span class="o">[</span><span class="n">.</span><span class="o">]</span><span class="w">  </span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">title</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">site</span><span class="vm">?</span><span class="w"> </span><span class="n">Super</span><span class="w"> </span><span class="n">blog</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Who</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">author</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">site</span><span class="vm">?</span><span class="w"> </span><span class="n">username</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="k">language</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">site</span><span class="vm">?</span><span class="w"> </span><span class="o">[</span><span class="n">en</span><span class="o">]</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">specify</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">URL</span><span class="w"> </span><span class="k">prefix</span><span class="vm">?</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">g</span><span class="p">.,</span><span class="w"> </span><span class="nl">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="w">   </span><span class="p">(</span><span class="n">Y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">enable</span><span class="w"> </span><span class="n">article</span><span class="w"> </span><span class="n">pagination</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">Y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">How</span><span class="w"> </span><span class="n">many</span><span class="w"> </span><span class="n">articles</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="n">do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="vm">?</span><span class="w"> </span><span class="o">[</span><span class="n">10</span><span class="o">]</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="nc">time</span><span class="w"> </span><span class="k">zone</span><span class="vm">?</span><span class="w"> </span><span class="o">[</span><span class="n">Europe/Paris</span><span class="o">]</span><span class="w"> </span><span class="n">UTC</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">generate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">Fabfile</span><span class="o">/</span><span class="n">Makefile</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">automate</span><span class="w"> </span><span class="n">generation</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">publishing</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">Y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">auto</span><span class="o">-</span><span class="n">reload</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">simpleHTTP</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">assist</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">theme</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">site</span><span class="w"> </span><span class="n">development</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">Y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">upload</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">website</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">FTP</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">upload</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">website</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">SSH</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">upload</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">website</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">Dropbox</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">upload</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">website</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">S3</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">upload</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">website</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">Rackspace</span><span class="w"> </span><span class="n">Cloud</span><span class="w"> </span><span class="n">Files</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">upload</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">website</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">GitHub</span><span class="w"> </span><span class="n">Pages</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
-<span class="o">&gt;</span><span class="w"> </span><span class="k">Is</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">personal</span><span class="w"> </span><span class="n">page</span><span class="w"> </span><span class="p">(</span><span class="n">username</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">)</span><span class="vm">?</span><span class="w"> </span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">N</span><span class="p">)</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
-<span class="n">Done</span><span class="p">.</span><span class="w"> </span><span class="n">Your</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">project</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">available</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="n">blog</span><span class="w"></span>
-</code></pre></div>
-
-
-<p>Pelican 会为你创建以下目录</p>
-<div class="highlight"><pre><span></span><code><span class="err">Makefile      content/     develop_server.sh*</span>
-<span class="err">fabfile.py    output/      pelicanconf.py</span>
-<span class="err">publishconf.py</span>
-</code></pre></div>
-
-
-<h3>提交content 分支</h3>
-<p>将所有 Pelican 生成的文件添加到本地 Git 仓库的 content 分支，提交更改，然后将本地更改推送到 Github 上托管的远程仓库：</p>
-<div class="highlight"><pre><span></span><code>$ git add .
-$ git commit -m <span class="s1">&#39;initial pelican commit to content&#39;</span>
-$ git push origin content
-</code></pre></div>
-
-
-<h3>提交一篇文章测试一下</h3>
-<p><code>cd content</code> content 目录存放markdown格式的文章
-让我新建first-post.md</p>
-<div class="highlight"><pre><span></span><code><span class="n">title</span><span class="o">:</span> <span class="err">使用</span> <span class="n">Python</span> <span class="err">在</span> <span class="n">GitHub</span> <span class="err">上运行你的博客</span>
-<span class="n">date</span><span class="o">:</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">12</span>
-<span class="n">author</span><span class="o">:</span> <span class="n">charles</span>
-<span class="n">Tags</span><span class="o">:</span> <span class="n">pelican</span>
-<span class="n">Slug</span><span class="o">:</span> <span class="n">pelican_course</span>
-
-<span class="err">使用</span> <span class="n">Pelican</span> <span class="err">创建博客，这是一个基于</span> <span class="n">Python</span> <span class="err">的平台，与</span> <span class="n">GitHub</span> <span class="err">配合的不错。</span>
-</code></pre></div>
-
-
-<p>date：发布时间 ,<code>pelicanconf.py</code>文件可以设置 <code>DEFAULT_DATE_FORMAT = '%Y-%m-%d'</code> 时间格式化
-author : 作者
-Tags：标签
-Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的url。但是有时侯拼音是错误的，而且对于搜索引擎很不友好</p>
-<h3>发布</h3>
-<ul>
-<li>运行 Pelican 以在 output 中生成静态 HTML 文件：
-<code>$ pelican content -o output -s publishconf.py</code></li>
-<li>使用 ghp-import 将 output 目录的内容添加到 master 分支中：
-<code>$ ghp-import -m "Generate Pelican site" --no-jekyll -b master output</code></li>
-<li>将本地 master 分支推送到远程仓库：
-<code>$ git push origin master</code></li>
-<li>提交新内容并将其推送到 content 分支
-<code>$ git add content $ git commit -m 'added a first post, a photo and an about page' $ git push origin content</code></li>
-</ul>
-<h3>完成</h3>
-<p>打开浏览器输入https://username.github.io 就可以看到博客内容。</p>
-<h3>定制blog</h3>
-<p>进一步定制博客配置
-1. 独立域名 
-购买域名映射到https://username.github.io之后在output目录下，创建CNAME文件。内容就是你购买的域名。因为github pages只允许CNAME中的域名映射。
-2. 定制主题
-找到自己喜欢的pelican主题，<a href="https://github.com/getpelican/pelican-themes">主题地址点我</a>
-3. 关于我
-这个就像相当于一个自我介绍的页面，所以就需要在content目录下创建一个pages目录，然后把你要展示的内容放到pages目录下就可以了。</p>
-<h3>简化发布流程</h3>
-<ol>
-<li><code>make html</code> 自动执行 <code>pelican content -o output -s publishconf.py</code></li>
-<li><code>make serve</code> 启动本地服务 <code>127.0.0.1:8000</code>查看修改内容</li>
-<li><code>make github</code> 自动施行 <code>ghp-import -m "Generate Pelican site" --no-jekyll -b master output</code>&amp;<code>git push origin master</code></li>
-</ol>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p><code>pip install pelican ghp-import …</code></p>
+                <a class="readmore" href="/pelican_course.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
