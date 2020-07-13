@@ -3,6 +3,8 @@ date: 2020-07-12
 author: charles
 Tags: pelican
 Slug: pelican_course
+Category: python
+
 
 每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。
 ## 为什么使用 GitHub Pages
