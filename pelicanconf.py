@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 AUTHOR = 'charles'
-SITENAME = 'Red&White'
+SITENAME = '少年白'
 SITEURL = ''
 
 PATH = 'content'
@@ -23,13 +23,13 @@ AUTHOR_FEED_RSS = None
 LINKS = (('Pelican', 'http://getpelican.com/'),
          ('Python.org', 'http://python.org/'),
          ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+         )
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = (('Django-chat', 'http://106.55.162.109/'),
+          ('Github', 'https://github.com/xhongc'),)
 
 DEFAULT_PAGINATION = 10
-
+DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
