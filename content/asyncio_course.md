@@ -1,8 +1,7 @@
-title: python协程库asyncio (异步io)
+title: python协程库asyncio(异步io)
 date: 2019-07-19
 author: charles
 Tags: python
-Category: python
 Slug: asyncio_course
 
 # 介绍
