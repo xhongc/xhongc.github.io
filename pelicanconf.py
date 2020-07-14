@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
-import css_html_js_minify
+# import css_html_js_minify
 AUTHOR = 'charles'
 SITENAME = '少年白'
 SITEURL = ''
@@ -37,7 +37,7 @@ THEME = 'pelican-bootstrap3'
 JINJA_ENVIRONMENT = {'extensions': ['jinja2.ext.i18n']}
 # PLUGIN_PATHS = ['/Users/xiehongchao/Downloads/pelican-plugins-master']
 PLUGIN_PATHS = ['./pelican-plugins']
-PLUGINS = ['i18n_subsites', 'tag_cloud','css-html-js-minify']
+PLUGINS = ['i18n_subsites', 'tag_cloud']
 # BOOTSTRAP_THEME = 'yeti'
 PYGMENTS_STYLE = 'friendly'
 BANNER_ALL_PAGES = False

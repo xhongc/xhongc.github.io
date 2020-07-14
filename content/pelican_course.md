@@ -6,19 +6,19 @@ Slug: pelican_course
 Category: python
 
 每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。
-## 为什么使用 GitHub Pages
+### 为什么使用 GitHub Pages
 - 首先它是完全免费，可以省下一笔服务费
 - 无须自己购买云服务进行搭建，只需按步骤一步步操作即可，即使你不懂他的技术细节；
 - 支持的功能多，玩法丰富，你可以绑定你的域名、使用免费的 HTTPS、自己 DIY 网站的主题、使用他人开发好的插件等等
 - 当完成搭建后，你只需要专注于文章创作就可以了，其他诸如环境搭建、系统维护、文件存储的事情一概不用操心，都由 GitHub 处理
-## Github中创建一个仓库
+### Github中创建一个仓库
 选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io
-## 安装 Pelican
+### 安装 Pelican
 `pip install pelican ghp-import Markdown`
 将这个刚创建空 Git 仓库克隆到本地：
 `git clone <https://GitHub.com/username/username.github.io> blog`
 `cd blog`
-## 使用Pelican 生成静态页面
+### 使用Pelican 生成静态页面
 在 GitHub 上发布 Web 内容有一个不太引入注意的技巧，对于托管在名为 username.github.io 的仓库的用户页面，其内容由 master 分支提供服务。
 
 我强烈建议所有的 Pelican 配置文件和原始的 Markdown 文件都不要保留在 master 中，master 中只保留 Web 内容。因此，我将 Pelican 配置和原始内容保留在一个我喜欢称为 content 的单独分支中。（你可以随意创建一个分支，但以下内容沿用 content。）我喜欢这种结构，因为我可以放弃掉 master 中的所有文件，然后用 content 分支重新填充它。
