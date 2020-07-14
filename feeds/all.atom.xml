@@ -31,32 +31,32 @@ $ jekyll --version 然后，在本地编译你的repository。&lt;/p&gt;
 &lt;p&gt;$ jekyll build --safe jekyll --trace 给出的出错信息还是很详细的，能看出在什么位置发生了错误。
 查看错误信息并修改&lt;/p&gt;
 &lt;p&gt;我是正好遇到Github Pages 降级，等github修复后可以正常了&lt;/p&gt;</content><category term="python"></category><category term="github"></category></entry><entry><title>使用 Python 在 GitHub 上运行你的博客</title><link href="/pelican_course.html" rel="alternate"></link><published>2020-07-12T00:00:00+00:00</published><updated>2020-07-12T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-12:/pelican_course.html</id><summary type="html">&lt;p&gt;每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
-&lt;h2&gt;为什么使用 GitHub Pages&lt;/h2&gt;
+&lt;h3&gt;为什么使用 GitHub Pages&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;首先它是完全免费，可以省下一笔服务费&lt;/li&gt;
 &lt;li&gt;无须自己购买云服务进行搭建，只需按步骤一步步操作即可，即使你不懂他的技术细节；&lt;/li&gt;
 &lt;li&gt;支持的功能多，玩法丰富，你可以绑定你的域名、使用免费的 HTTPS、自己 DIY 网站的主题、使用他人开发好的插件等等&lt;/li&gt;
 &lt;li&gt;当完成搭建后，你只需要专注于文章创作就可以了，其他诸如环境搭建、系统维护、文件存储的事情一概不用操心，都由 GitHub 处理&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;Github中创建一个仓库&lt;/h2&gt;
+&lt;h3&gt;Github中创建一个仓库&lt;/h3&gt;
 &lt;p&gt;选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io&lt;/p&gt;
-&lt;h2&gt;安装 Pelican&lt;/h2&gt;
+&lt;h3&gt;安装 Pelican&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;pip install pelican ghp-import …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;每个入门程序员或多都想拥有一个自己博客站点，苦于高额的服务器费用和较为麻烦的操作步骤，你完全可以通过 GitHub Pages来实现一个免费，可定制的书写，记录生活，技术分享的平台。&lt;/p&gt;
-&lt;h2&gt;为什么使用 GitHub Pages&lt;/h2&gt;
+&lt;h3&gt;为什么使用 GitHub Pages&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;首先它是完全免费，可以省下一笔服务费&lt;/li&gt;
 &lt;li&gt;无须自己购买云服务进行搭建，只需按步骤一步步操作即可，即使你不懂他的技术细节；&lt;/li&gt;
 &lt;li&gt;支持的功能多，玩法丰富，你可以绑定你的域名、使用免费的 HTTPS、自己 DIY 网站的主题、使用他人开发好的插件等等&lt;/li&gt;
 &lt;li&gt;当完成搭建后，你只需要专注于文章创作就可以了，其他诸如环境搭建、系统维护、文件存储的事情一概不用操心，都由 GitHub 处理&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;Github中创建一个仓库&lt;/h2&gt;
+&lt;h3&gt;Github中创建一个仓库&lt;/h3&gt;
 &lt;p&gt;选择创建一个新的 Repository  在 Repository name 的位置填写域名，格式是 username.GitHub.io&lt;/p&gt;
-&lt;h2&gt;安装 Pelican&lt;/h2&gt;
+&lt;h3&gt;安装 Pelican&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;pip install pelican ghp-import Markdown&lt;/code&gt;
 将这个刚创建空 Git 仓库克隆到本地：
 &lt;code&gt;git clone &amp;lt;https://GitHub.com/username/username.github.io&amp;gt; blog&lt;/code&gt;
 &lt;code&gt;cd blog&lt;/code&gt;&lt;/p&gt;
-&lt;h2&gt;使用Pelican 生成静态页面&lt;/h2&gt;
+&lt;h3&gt;使用Pelican 生成静态页面&lt;/h3&gt;
 &lt;p&gt;在 GitHub 上发布 Web 内容有一个不太引入注意的技巧，对于托管在名为 username.github.io 的仓库的用户页面，其内容由 master 分支提供服务。&lt;/p&gt;
 &lt;p&gt;我强烈建议所有的 Pelican 配置文件和原始的 Markdown 文件都不要保留在 master 中，master 中只保留 Web 内容。因此，我将 Pelican 配置和原始内容保留在一个我喜欢称为 content 的单独分支中。（你可以随意创建一个分支，但以下内容沿用 content。）我喜欢这种结构，因为我可以放弃掉 master 中的所有文件，然后用 content 分支重新填充它。
 &lt;code&gt;git checkout -b content&lt;/code&gt;&lt;/p&gt;
@@ -149,7 +149,7 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 &lt;li&gt;&lt;code&gt;make html&lt;/code&gt; 自动执行 &lt;code&gt;pelican content -o output -s publishconf.py&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;make serve&lt;/code&gt; 启动本地服务 &lt;code&gt;127.0.0.1:8000&lt;/code&gt;查看修改内容&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;make github&lt;/code&gt; 自动施行 &lt;code&gt;ghp-import -m "Generate Pelican site" --no-jekyll -b master output&lt;/code&gt;&amp;amp;&lt;code&gt;git push origin master&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><category term="python"></category><category term="pelican"></category></entry><entry><title>python协程库asyncio(异步io)</title><link href="/asyncio_course.html" rel="alternate"></link><published>2019-07-19T00:00:00+00:00</published><updated>2019-07-19T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2019-07-19:/asyncio_course.html</id><summary type="html">&lt;h1&gt;介绍&lt;/h1&gt;
+&lt;/ol&gt;</content><category term="python"></category><category term="pelican"></category></entry><entry><title>python协程库asyncio(异步io)</title><link href="/asyncio_course.html" rel="alternate"></link><published>2019-07-19T00:00:00+00:00</published><updated>2019-07-19T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2019-07-19:/asyncio_course.html</id><summary type="html">&lt;h3&gt;介绍&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;异步IO&lt;/strong&gt;：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
 &lt;strong&gt;协程&lt;/strong&gt;：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。&lt;/p&gt;
@@ -167,7 +167,7 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;threading&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Thread&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;asyncio&lt;/span&gt;
 
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;start_thread_loop …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;介绍&lt;/h1&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;start_thread_loop …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h3&gt;介绍&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;异步IO&lt;/strong&gt;：就是发起一个IO操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。
 &lt;strong&gt;协程&lt;/strong&gt;：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。&lt;/p&gt;
