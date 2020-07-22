@@ -218,6 +218,35 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 </ol>
             </div>
             <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'xhongc-disqus-com'; // required: replace example with your forum shortname
+
+            var disqus_config = function () {
+                this.language = "chinese (simplified)";
+
+                        this.page.identifier = '2020-07-12-pelican_course';
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
         </article>
     </section>
 
@@ -246,6 +275,7 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 <li class="list-group-item">
   <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
   <ul class="list-group" id="recentposts">
+    <li class="list-group-item"><a href="/docker-image-modify.html">Docker 镜像修改和提交</a></li>
     <li class="list-group-item"><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></li>
     <li class="list-group-item"><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a></li>
     <li class="list-group-item"><a href="/asyncio_course.html">python协程库asyncio(异步io)</a></li>
@@ -261,10 +291,13 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
       <a href="/tag/python.html">python</a>
     </li>
     <li class="list-group-item tag-8">
+      <a href="/tag/pelican.html">pelican</a>
+    </li>
+    <li class="list-group-item tag-8">
       <a href="/tag/github.html">github</a>
     </li>
     <li class="list-group-item tag-8">
-      <a href="/tag/pelican.html">pelican</a>
+      <a href="/tag/docker.html">docker</a>
     </li>
   </ul>
 </li>
@@ -299,6 +332,21 @@ Slug： 用于文章生成url的。不添加这个字段话，默认是拼音的
 
 
     <script src="/theme/js/bodypadding.js"></script>
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'xhongc-disqus-com'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
 
 
 </body>

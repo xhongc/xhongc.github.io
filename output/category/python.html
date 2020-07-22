@@ -74,6 +74,30 @@
     <div class="row">
         <div class="col-sm-9">
             <article>
+                <h2><a href="/docker-image-modify.html">Docker 镜像修改和提交</a></h2>
+                <div class="summary"><blockquote>
+<p>当你发现构建的镜像缺少python模块，可以进入镜像修改</p>
+</blockquote>
+<p><hr>
+1.启动镜像</p>
+<ul>
+<li>docker run -it "&lt;镜像ID&gt;" /bin/bash</li>
+<li>修改...</li>
+<li><code>exit</code>
+<hr></li>
+</ul>
+<p>2.提交修改</p>
+<ul>
+<li>容器ID = 修改后docker ps -l 查看生成的容器ID</li>
+<li>docker commit "&lt;容器ID&gt;" image_name:tag
+<hr>
+查看镜像已经有了修改</li>
+</ul>
+                    <a class="btn btn-default btn-xs" href="/docker-image-modify.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></h2>
                 <div class="summary"><p>刚刚往github pages的repository里提交了一篇文章后，却发现github pages的页面一直没有更新——看不到新提交的文章。网上搜了一些资料，最后解决了这个问题。</p>
 <p>一般来说，只要你的github pages repository有新的提交，github的服务器就会运行jekyll编译你的repository（延时很小）。如果编译出错，那么你的github pages页面是不会更新的；同时，github也会给你发一封提醒邮件，大致内容如下，</p>
@@ -157,6 +181,7 @@
 <li class="list-group-item">
   <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
   <ul class="list-group" id="recentposts">
+    <li class="list-group-item"><a href="/docker-image-modify.html">Docker 镜像修改和提交</a></li>
     <li class="list-group-item"><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></li>
     <li class="list-group-item"><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a></li>
     <li class="list-group-item"><a href="/asyncio_course.html">python协程库asyncio(异步io)</a></li>
@@ -172,10 +197,13 @@
       <a href="/tag/python.html">python</a>
     </li>
     <li class="list-group-item tag-8">
+      <a href="/tag/pelican.html">pelican</a>
+    </li>
+    <li class="list-group-item tag-8">
       <a href="/tag/github.html">github</a>
     </li>
     <li class="list-group-item tag-8">
-      <a href="/tag/pelican.html">pelican</a>
+      <a href="/tag/docker.html">docker</a>
     </li>
   </ul>
 </li>
@@ -210,6 +238,21 @@
 
 
     <script src="/theme/js/bodypadding.js"></script>
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'xhongc-disqus-com'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
 
 
 </body>

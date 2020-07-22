@@ -58,3 +58,4 @@ TAG_CLOUD_STEPS = 8  # font size
 TAG_CLOUD_MAX_ITEMS = 100
 TAG_CLOUD_SORTING = 'random'
 TAG_CLOUD_BADGE = True
+DISQUS_SITENAME = "xhongc-disqus-com"
