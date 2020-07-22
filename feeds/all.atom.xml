@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-13T00:00:00+00:00</updated><entry><title>Github Pages不能自动更新</title><link href="/github_page_no_upgrade.html" rel="alternate"></link><published>2020-07-13T00:00:00+00:00</published><updated>2020-07-13T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-13:/github_page_no_upgrade.html</id><summary type="html">&lt;p&gt;刚刚往github pages的repository里提交了一篇文章后，却发现github pages的页面一直没有更新——看不到新提交的文章。网上搜了一些资料，最后解决了这个问题。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-22T00:00:00+00:00</updated><entry><title>Docker 镜像修改和提交</title><link href="/docker-image-modify.html" rel="alternate"></link><published>2020-07-22T00:00:00+00:00</published><updated>2020-07-22T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-22:/docker-image-modify.html</id><content type="html">&lt;blockquote&gt;
+&lt;p&gt;当你发现构建的镜像缺少python模块，可以进入镜像修改&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;hr&gt;
+1.启动镜像&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;docker run -it "&amp;lt;镜像ID&amp;gt;" /bin/bash&lt;/li&gt;
+&lt;li&gt;修改...&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;exit&lt;/code&gt;
+&lt;hr&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;2.提交修改&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;容器ID = 修改后docker ps -l 查看生成的容器ID&lt;/li&gt;
+&lt;li&gt;docker commit "&amp;lt;容器ID&amp;gt;" image_name:tag
+&lt;hr&gt;
+查看镜像已经有了修改&lt;/li&gt;
+&lt;/ul&gt;</content><category term="python"></category><category term="docker"></category></entry><entry><title>Github Pages不能自动更新</title><link href="/github_page_no_upgrade.html" rel="alternate"></link><published>2020-07-13T00:00:00+00:00</published><updated>2020-07-13T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-13:/github_page_no_upgrade.html</id><summary type="html">&lt;p&gt;刚刚往github pages的repository里提交了一篇文章后，却发现github pages的页面一直没有更新——看不到新提交的文章。网上搜了一些资料，最后解决了这个问题。&lt;/p&gt;
 &lt;p&gt;一般来说，只要你的github pages repository有新的提交，github的服务器就会运行jekyll编译你的repository（延时很小）。如果编译出错，那么你的github pages页面是不会更新的；同时，github也会给你发一封提醒邮件，大致内容如下，&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;page&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="n"&gt;failed&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="ss"&gt;`master`&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;following&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 

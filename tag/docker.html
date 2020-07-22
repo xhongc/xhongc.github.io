@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="chinese (simplified)" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
-    <title>About - 少年白</title>
+    <title>docker - 少年白</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -10,16 +10,16 @@
 
     <link href="/images/flower.png" rel="icon">
 
-<link rel="canonical" href="/pages/about.html">
 
-        <meta name="author" content="charles" />
-        <meta name="description" content="Hi, I am 少年白，苟且偷生的Python 开发者" />
+    <meta name="author" content="charles" />
+    <meta name="keywords" content="docker" />
 
-    <meta property="og:site_name" content="少年白" />
-    <meta property="og:type" content="article"/>
-    <meta property="og:title" content="About"/>
-    <meta property="og:url" content="/pages/about.html"/>
-    <meta property="og:description" content="Hi, I am 少年白，苟且偷生的Python 开发者" />
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="少年白" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="少年白"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:description" content="少年白"/>
 
 
 
@@ -51,7 +51,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li class="active"><a href="/pages/about.html">
+                         <li><a href="/pages/about.html">
                              About
                           </a></li>
                         <li >
@@ -72,13 +72,31 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
-    <section id="content" class="body">
-        <h1 class="entry-title">About</h1>
-        
-        <div class="entry-content">
-            <p>Hi, I am 少年白，苟且偷生的Python 开发者</p>
-        </div>
-    </section>
+            <article>
+                <h2><a href="/docker-image-modify.html">Docker 镜像修改和提交</a></h2>
+                <div class="summary"><blockquote>
+<p>当你发现构建的镜像缺少python模块，可以进入镜像修改</p>
+</blockquote>
+<p><hr>
+1.启动镜像</p>
+<ul>
+<li>docker run -it "&lt;镜像ID&gt;" /bin/bash</li>
+<li>修改...</li>
+<li><code>exit</code>
+<hr></li>
+</ul>
+<p>2.提交修改</p>
+<ul>
+<li>容器ID = 修改后docker ps -l 查看生成的容器ID</li>
+<li>docker commit "&lt;容器ID&gt;" image_name:tag
+<hr>
+查看镜像已经有了修改</li>
+</ul>
+                    <a class="btn btn-default btn-xs" href="/docker-image-modify.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
@@ -105,9 +123,6 @@
   <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
   <ul class="list-group" id="recentposts">
     <li class="list-group-item"><a href="/docker-image-modify.html">Docker 镜像修改和提交</a></li>
-    <li class="list-group-item"><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></li>
-    <li class="list-group-item"><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a></li>
-    <li class="list-group-item"><a href="/asyncio_course.html">python协程库asyncio(异步io)</a></li>
   </ul>
 </li>
 <!-- End Sidebar/Recent Posts -->
