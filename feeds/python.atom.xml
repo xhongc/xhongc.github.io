@@ -14,11 +14,11 @@
 &lt;h2&gt;代码准备&lt;/h2&gt;
 &lt;p&gt;这里使用GitHub上的django-channels实现的websokect项目:
 &lt;a href="https://github.com/xhongc/dj-chat"&gt;https://github.com/xhongc/dj-chat&lt;/a&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone  https://github.com/xhongc/dj-chat
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone  https://github.com/xhongc/dj-chat.git
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2&gt;构建镜像（Dockerfile …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;前言&lt;/h2&gt;
+&lt;h2&gt;构建镜像 …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;这里使用Docker部署应用，用到的技术栈&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Django==2.2.14&lt;/li&gt;
@@ -33,7 +33,7 @@
 &lt;h2&gt;代码准备&lt;/h2&gt;
 &lt;p&gt;这里使用GitHub上的django-channels实现的websokect项目:
 &lt;a href="https://github.com/xhongc/dj-chat"&gt;https://github.com/xhongc/dj-chat&lt;/a&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone  https://github.com/xhongc/dj-chat
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone  https://github.com/xhongc/dj-chat.git
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 

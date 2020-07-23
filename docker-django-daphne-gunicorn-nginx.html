@@ -14,13 +14,13 @@
 
         <meta name="author" content="charles" />
         <meta name="keywords" content="docker" />
-        <meta name="description" content="前言 这里使用Docker部署应用，用到的技术栈 Django==2.2.14 Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。 Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。 Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。 Docker, 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。 tips: 这里默认大家已经安装docker 和docker-compose 代码准备 这里使用GitHub上的django-channels实现的websokect项目: https://github.com/xhongc/dj-chat git clone https://github.com/xhongc/dj-chat 构建镜像（Dockerfile …" />
+        <meta name="description" content="前言 这里使用Docker部署应用，用到的技术栈 Django==2.2.14 Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。 Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。 Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。 Docker, 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。 tips: 这里默认大家已经安装docker 和docker-compose 代码准备 这里使用GitHub上的django-channels实现的websokect项目: https://github.com/xhongc/dj-chat git clone https://github.com/xhongc/dj-chat.git 构建镜像 …" />
 
         <meta property="og:site_name" content="少年白" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis"/>
         <meta property="og:url" content="/docker-django-daphne-gunicorn-nginx.html"/>
-        <meta property="og:description" content="前言 这里使用Docker部署应用，用到的技术栈 Django==2.2.14 Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。 Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。 Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。 Docker, 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。 tips: 这里默认大家已经安装docker 和docker-compose 代码准备 这里使用GitHub上的django-channels实现的websokect项目: https://github.com/xhongc/dj-chat git clone https://github.com/xhongc/dj-chat 构建镜像（Dockerfile …"/>
+        <meta property="og:description" content="前言 这里使用Docker部署应用，用到的技术栈 Django==2.2.14 Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。 Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。 Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。 Docker, 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。 tips: 这里默认大家已经安装docker 和docker-compose 代码准备 这里使用GitHub上的django-channels实现的websokect项目: https://github.com/xhongc/dj-chat git clone https://github.com/xhongc/dj-chat.git 构建镜像 …"/>
         <meta property="article:published_time" content="2020-07-22" />
             <meta property="article:section" content="python" />
             <meta property="article:tag" content="docker" />
@@ -122,7 +122,7 @@
 <h2>代码准备</h2>
 <p>这里使用GitHub上的django-channels实现的websokect项目:
 <a href="https://github.com/xhongc/dj-chat">https://github.com/xhongc/dj-chat</a></p>
-<div class="highlight"><pre><span></span><code>git clone  https://github.com/xhongc/dj-chat
+<div class="highlight"><pre><span></span><code>git clone  https://github.com/xhongc/dj-chat.git
 </code></pre></div>
 
 
@@ -489,13 +489,13 @@ dj-chat/Dockerfile</p>
       <a href="/tag/docker.html">docker</a>
     </li>
     <li class="list-group-item tag-8">
-      <a href="/tag/python.html">python</a>
-    </li>
-    <li class="list-group-item tag-8">
       <a href="/tag/pelican.html">pelican</a>
     </li>
     <li class="list-group-item tag-8">
       <a href="/tag/github.html">github</a>
+    </li>
+    <li class="list-group-item tag-8">
+      <a href="/tag/python.html">python</a>
     </li>
   </ul>
 </li>
