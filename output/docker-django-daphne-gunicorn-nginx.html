@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="chinese (simplified)" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis - 少年白</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="/images/flower.png" rel="icon">
+
+<link rel="canonical" href="/docker-django-daphne-gunicorn-nginx.html">
+
+        <meta name="author" content="charles" />
+        <meta name="keywords" content="docker" />
+        <meta name="description" content="前言 这里使用Docker部署应用，用到的技术栈 Django==2.2.14 Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。 Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。 Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。 Docker, 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。 tips: 这里默认大家已经安装docker 和docker-compose 代码准备 这里使用GitHub上的django-channels实现的websokect项目: https://github.com/xhongc/dj-chat git clone https://github.com/xhongc/dj-chat.git 构建镜像 …" />
+
+        <meta property="og:site_name" content="少年白" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis"/>
+        <meta property="og:url" content="/docker-django-daphne-gunicorn-nginx.html"/>
+        <meta property="og:description" content="前言 这里使用Docker部署应用，用到的技术栈 Django==2.2.14 Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。 Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。 Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。 Docker, 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。 tips: 这里默认大家已经安装docker 和docker-compose 代码准备 这里使用GitHub上的django-channels实现的websokect项目: https://github.com/xhongc/dj-chat git clone https://github.com/xhongc/dj-chat.git 构建镜像 …"/>
+        <meta property="article:published_time" content="2020-07-22" />
+            <meta property="article:section" content="python" />
+            <meta property="article:tag" content="docker" />
+            <meta property="article:author" content="charles" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/friendly.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="少年白 ATOM Feed"/>
+
+        <link href="/feeds/python.atom.xml" type="application/atom+xml" rel="alternate"
+              title="少年白 python ATOM Feed"/>
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+少年白            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                         <li><a href="/pages/about.html">
+                             About
+                          </a></li>
+                        <li class="active">
+                            <a href="/category/python.html">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<!-- Banner -->
+<!-- End Banner -->
+
+<!-- Content Container -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/docker-django-daphne-gunicorn-nginx.html"
+                       rel="bookmark"
+                       title="Permalink to Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis">
+                        Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2020-07-22T00:00:00+00:00"> 2020-07-22</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tag/docker.html">docker</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2>前言</h2>
+<p>这里使用Docker部署应用，用到的技术栈</p>
+<ul>
+<li>Django==2.2.14</li>
+<li>Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。</li>
+<li>Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。</li>
+<li>Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。</li>
+<li>Docker,  是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。</li>
+</ul>
+<blockquote>
+<p>tips: 这里默认大家已经安装<code>docker</code> 和<code>docker-compose</code></p>
+</blockquote>
+<h2>代码准备</h2>
+<p>这里使用GitHub上的django-channels实现的websokect项目:
+<a href="https://github.com/xhongc/dj-chat">https://github.com/xhongc/dj-chat</a></p>
+<div class="highlight"><pre><span></span><code>git clone  https://github.com/xhongc/dj-chat.git
+</code></pre></div>
+
+
+<h2>构建镜像（Dockerfile）</h2>
+<p>目录结构 </p>
+<p><img alt="UqNSv4.png" src="https://s1.ax1x.com/2020/07/23/UqNSv4.png"></p>
+<ul>
+<li>项目镜像 <code>dj-chat/Dockerfile</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">python:3.7</span>
+
+<span class="k">ENV</span> PYTHONUNBUFFERED <span class="m">1</span>
+<span class="c"># 更新apt-get</span>
+<span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y gettext python3-dev libpq-dev
+<span class="k">RUN</span> mkdir /dj-chat
+<span class="c">#设置工作目录</span>
+<span class="k">WORKDIR</span><span class="s"> /dj-chat</span>
+<span class="c">#将当前目录加入到工作目录中</span>
+<span class="k">ADD</span> . /dj-chat
+
+<span class="k">RUN</span> pip install -r /dj-chat/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+<span class="k">RUN</span> python manage.py migrate
+
+<span class="k">EXPOSE</span><span class="s"> 80 8001 8000</span>
+</code></pre></div>
+
+
+<ul>
+<li>
+<h4>构建一个项目的镜像</h4>
+</li>
+</ul>
+<p><code>FROM python:3.7</code> 基于python3.7镜像进行一步一步的叠层操作。</p>
+<p><code>ENV PYTHONUNBUFFERED 1</code> 设置系统环境变量</p>
+<p><code>ADD . /dj-chat</code>  将当前目录加入到工作目录中</p>
+<p><code>RUN pip install -r /dj-chat/requirements.txt</code> 镜像目录已经有了代码 可以开始安装python环境</p>
+<p><code>RUN python manage.py migrate</code>迁移数据库</p>
+<p><code>EXPOSE 80 8001 8000</code> 暴露端口 之后daphne ，gunicorn服务方便映射</p>
+<ul>
+<li>
+<h4>Nginx 镜像<code>dj-chat/nginx/Dockerfile</code></h4>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">nginx</span>
+
+<span class="c">#对外暴露端口</span>
+<span class="k">EXPOSE</span><span class="s"> 80</span>
+<span class="k">RUN</span> mkdir -p /home/ubuntu/chat_log
+<span class="k">RUN</span> rm /etc/nginx/conf.d/default.conf
+<span class="k">ADD</span> ./nginx/nginx-chat.conf  /etc/nginx/conf.d/
+<span class="k">ADD</span> ./templates/chat/boot_chat.html  /home/ubuntu/
+</code></pre></div>
+
+
+<p><code>RUN mkdir -p /home/ubuntu/chat_log</code> nginx log文件目录，可以自行创建在其他目录。</p>
+<p><code>RUN rm /etc/nginx/conf.d/default.conf</code> 移除默认nginx配置。</p>
+<p><code>ADD ./nginx/nginx-chat.conf  /etc/nginx/conf.d/</code> 添加自己写的nginx配置</p>
+<p><code>ADD ./templates/chat/boot_chat.html  /home/ubuntu/</code> 项目nginx首页index</p>
+<h2>编排镜像（docker-compose）</h2>
+<p>把各个镜像连结起来</p>
+<div class="highlight"><pre><span></span><code><span class="k">version</span><span class="p">:</span> <span class="s1">&#39;3.7&#39;</span>
+
+<span class="n">services</span><span class="p">:</span>
+  <span class="n">redis</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">redis</span>
+    <span class="k">restart</span><span class="p">:</span> <span class="n">always</span>
+  <span class="n">dj</span><span class="o">-</span><span class="n">chat</span><span class="p">.</span><span class="n">wsgi</span><span class="p">:</span>
+    <span class="n">build</span><span class="p">:</span> <span class="p">.</span>
+    <span class="n">image</span><span class="p">:</span> <span class="ss">&quot;dj-chat:latest&quot;</span>
+    <span class="n">container_name</span><span class="p">:</span> <span class="ss">&quot;dj-chat-g-unicorn&quot;</span>
+    <span class="n">command</span><span class="p">:</span> <span class="n">bash</span> <span class="o">-</span><span class="k">c</span> <span class="ss">&quot;gunicorn -w 1 -k gevent -b 0.0.0.0:8000 dj_chat.wsgi:application&quot;</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="ss">&quot;8000:8000&quot;</span>
+    <span class="n">depends_on</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">redis</span>
+    <span class="n">links</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">redis</span>
+    <span class="n">expose</span><span class="p">:</span>
+      <span class="o">-</span> <span class="ss">&quot;8000&quot;</span>
+  <span class="n">dj</span><span class="o">-</span><span class="n">chat</span><span class="p">.</span><span class="n">asgi</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="ss">&quot;dj-chat:latest&quot;</span>
+    <span class="n">container_name</span><span class="p">:</span> <span class="ss">&quot;dj-chat-daphne&quot;</span>
+    <span class="n">command</span><span class="p">:</span> <span class="n">bash</span> <span class="o">-</span><span class="k">c</span> <span class="ss">&quot;daphne -b 0.0.0.0 -p 8001 dj_chat.asgi:application&quot;</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="ss">&quot;8001:8001&quot;</span>
+    <span class="n">depends_on</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">redis</span>
+    <span class="n">links</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">redis</span>
+    <span class="n">expose</span><span class="p">:</span>
+      <span class="o">-</span> <span class="ss">&quot;8001&quot;</span>
+  <span class="n">nginx</span><span class="p">:</span>
+    <span class="n">build</span><span class="p">:</span>
+      <span class="n">context</span><span class="p">:</span> <span class="p">.</span>
+      <span class="n">dockerfile</span><span class="p">:</span> <span class="p">.</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">Dockerfile</span>
+    <span class="n">image</span><span class="p">:</span> <span class="ss">&quot;nginx-chat&quot;</span>
+    <span class="n">container_name</span><span class="p">:</span> <span class="ss">&quot;nginx-chat&quot;</span>
+    <span class="n">depends_on</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">dj</span><span class="o">-</span><span class="n">chat</span><span class="p">.</span><span class="n">asgi</span>
+      <span class="o">-</span> <span class="n">dj</span><span class="o">-</span><span class="n">chat</span><span class="p">.</span><span class="n">wsgi</span>
+    <span class="n">volumes</span><span class="p">:</span>
+      <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="k">static</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="k">static</span>
+    <span class="n">ports</span><span class="p">:</span>
+    <span class="o">-</span> <span class="ss">&quot;80:80&quot;</span>
+</code></pre></div>
+
+
+<p><code>version</code> 对应docker版本todo</p>
+<p><code>services</code> 构建各个镜像服务</p>
+<ul>
+<li>
+<p><code>redis</code> 没有自写Dokcerfile的镜像从官方hub拉取redis服务</p>
+</li>
+<li>
+<p><code>dj-chat.wsgi</code>：这里是应用于gunicorn</p>
+<ul>
+<li>
+<p>build： 指定Dockerfile 文件位置</p>
+</li>
+<li>
+<p>image：镜像名称</p>
+</li>
+<li>
+<p>container_name：容器名称</p>
+</li>
+<li>
+<p>command 执行命令启动Gunicorn（注意开的ip是0.0.0.0）</p>
+</li>
+<li>
+<p>ports： 端口映射（todo）</p>
+</li>
+<li>
+<p>depends_on： 容器的依赖 ，被依赖的服务会先启动</p>
+</li>
+<li>
+<p>links ：容器连接 todo</p>
+</li>
+<li>
+<p>expose 暴露端口</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>dj-chat.asgi</code> 应用于daphne</p>
+<ul>
+<li>
+<p>image：使用上面已经构建的镜像，不需要重新</p>
+</li>
+<li>
+<p>container_name：容器名称</p>
+</li>
+<li>
+<p>command 执行命令启动Daphne（注意开的ip是0.0.0.0）</p>
+</li>
+<li>
+<p>ports： 端口映射（todo）</p>
+</li>
+<li>
+<p>depends_on： 容器的依赖 ，被依赖的服务会先启动</p>
+</li>
+<li>
+<p>links ：容器连接 todo</p>
+</li>
+<li>
+<p>expose 暴露端口</p>
+</li>
+</ul>
+</li>
+<li>
+<p><code>nginx</code>：构建<code>dj-chat/nginx/Dockerfile</code></p>
+<ul>
+<li>
+<p>build：</p>
+<ul>
+<li>
+<p>context 上下文目录</p>
+</li>
+<li>
+<p>dockerfile：根据上下文目录的dockerfile相对路径</p>
+</li>
+</ul>
+</li>
+<li>
+<p>image：镜像</p>
+</li>
+<li>
+<p>container_name：容器名称</p>
+</li>
+<li>
+<p>depends_on：依赖wsgi和asgi服务</p>
+</li>
+<li>
+<p>volumes：静态文件挂载在nginx容器里</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>expose 和 ports 都可以暴露容器的端口</strong>，
+区别是 expose 仅暴露给其他容器，而 ports 会暴露给其他容器和宿主机，像dj-chat.asgi:设置了ports:- "8001:8001" 可以宿主机直接ip：8001 直接访问到。</p>
+<p><strong>坏的</strong><none>:<none><strong>镜像</strong>的产生而docker build 或是 pull 命令就会产生临时镜像。如果我们用docker-compose build新镜像后，因为版本更新需要重新创建，那么以前那个版本的镜像就会
+成为临时镜像。这个是需要删除的。删除命令见下。</p>
+<div class="highlight"><pre><span></span><code>清除坏的&lt;none&gt;:&lt;none&gt;镜像
+docker rmi <span class="k">$(</span>docker images -f <span class="s2">&quot;dangling=true&quot;</span> -q<span class="k">)</span>
+</code></pre></div>
+
+
+<h2>nginx配置和django配置</h2>
+<ul>
+<li>dj-chat/nginx/nginx-chat.conf</li>
+</ul>
+<p><code>proxy_pass http://dj-chat.wsgi:8000;</code>
+<code>proxy_pass http://dj-chat.asgi:8001;</code>
+ngixn配置代理host要改成docker-compose的容器名称</p>
+<ul>
+<li>dj-chat/dj-chat/settings</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django_redis.cache.RedisCache&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;LOCATION&quot;</span><span class="p">:</span> <span class="s2">&quot;redis://redis:6379/0&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;TIMEOUT&#39;</span><span class="p">:</span> <span class="mi">1800</span><span class="p">,</span>  <span class="c1"># 缓存超时时间（默认300，None表示永不过期，0表示立即过期）</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;MAX_ENTRIES&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span>  <span class="c1"># 最大缓存个数（默认300）</span>
+            <span class="s2">&quot;CULL_FREQUENCY&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="c1"># 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）</span>
+            <span class="s2">&quot;CLIENT_CLASS&quot;</span><span class="p">:</span> <span class="s2">&quot;django_redis.client.DefaultClient&quot;</span><span class="p">,</span>  <span class="c1"># redis客户端</span>
+            <span class="s2">&quot;CONNECTION_POOL_KWARGS&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;max_connections&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>  <span class="c1"># redis最大连接池配置</span>
+            <span class="s2">&quot;PASSWORD&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>  <span class="c1"># redis密码</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;KEY_PREFIX&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>  <span class="c1"># 缓存key的前缀（默认空）</span>
+        <span class="s1">&#39;VERSION&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># 缓存key的版本（默认1）</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>设置LOCATION的HOST要改成docker-compose的容器名称</p>
+<div class="highlight"><pre><span></span><code><span class="n">CHANNEL_LAYERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;BACKEND&#39;</span><span class="p">:</span> <span class="s1">&#39;channels_redis.core.RedisChannelLayer&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;CONFIG&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;hosts&quot;</span><span class="p">:</span> <span class="p">[(</span><span class="s1">&#39;redis&#39;</span><span class="p">,</span> <span class="mi">6379</span><span class="p">)],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<p>设置CHANNEL_LAYERS的HOST要改成docker-compose的容器名称redis</p>
+<h2>构建，运行容器</h2>
+<div class="highlight"><pre><span></span><code>docker-compose build
+docker-compose up -d
+</code></pre></div>
+
+
+<p>可以看到容器运行成功，访问127.0.0.1或者你的公网ip可以看到页面。</p>
+<h2>持续开发项目</h2>
+<p>如果项目还是在快速开发状态，可以把代码挂载卷上
+修改
+dj-chat/Dockerfile</p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">python:3.7</span>
+
+<span class="k">ENV</span> PYTHONUNBUFFERED <span class="m">1</span>
+
+<span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> apt-get install -y gettext python3-dev libpq-dev
+
+<span class="k">RUN</span> mkdir /dj-chat
+<span class="c">#设置工作目录</span>
+<span class="k">WORKDIR</span><span class="s"> /dj-chat</span>
+<span class="c">#将当前目录加入到工作目录中</span>
+<span class="c">#ADD . /dj-chat # 挂载卷中可以注释</span>
+<span class="k">ADD</span> ./requirements.txt /dj-chat/
+<span class="k">RUN</span> pip install -r /dj-chat/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+
+<span class="k">EXPOSE</span><span class="s"> 80 8001 8000</span>
+</code></pre></div>
+
+
+<p>和dj-chat/docker-compose.yml</p>
+<div class="highlight"><pre><span></span><code><span class="nt">dj-chat.wsgi</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">.:/dj-chat</span>
+<span class=" -Error">  </span><span class="nt">dj-chat.asgi</span><span class="p">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">...</span>
+    <span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">.:/dj-chat</span>
+</code></pre></div>
+
+
+<p>由github控制代码更新，<code>docker-compose restart</code> 重启容器生效</p>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'xhongc-disqus-com'; // required: replace example with your forum shortname
+
+            var disqus_config = function () {
+                this.language = "chinese (simplified)";
+
+                        this.page.identifier = '2020-07-22-docker-django-daphne-gunicorn-nginx';
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+<div id="aboutme">
+        <p>
+            <img width="100%" class="img-thumbnail" src="/images/flower.png"/>
+        </p>
+</div><!-- Sidebar -->
+<section class="well well-sm">
+  <ul class="list-group list-group-flush">
+
+<!-- Sidebar/Social -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+  <ul class="list-group" id="social">
+    <li class="list-group-item"><a href="http://106.55.162.109/"><i class="fa fa-django-chat-square fa-lg"></i> Django-chat</a></li>
+    <li class="list-group-item"><a href="https://github.com/xhongc"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Social -->
+
+<!-- Sidebar/Recent Posts -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
+  <ul class="list-group" id="recentposts">
+    <li class="list-group-item"><a href="/pdf_js_django_cors.html">PDF.js跨域（django后端处理数据流方法）</a></li>
+    <li class="list-group-item"><a href="/docker-django-daphne-gunicorn-nginx.html">Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis</a></li>
+    <li class="list-group-item"><a href="/docker-image-modify.html">Docker 镜像修改和提交</a></li>
+    <li class="list-group-item"><a href="/github_page_no_upgrade.html">Github Pages不能自动更新</a></li>
+    <li class="list-group-item"><a href="/pelican_course.html">使用 Python 在 GitHub 上运行你的博客</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Recent Posts -->
+
+<!-- Sidebar/Tag Cloud -->
+<li class="list-group-item">
+  <a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+  <ul class="list-group " id="tags">
+    <li class="list-group-item tag-1">
+      <a href="/tag/docker.html">docker</a>
+    </li>
+    <li class="list-group-item tag-8">
+      <a href="/tag/pelican.html">pelican</a>
+    </li>
+    <li class="list-group-item tag-8">
+      <a href="/tag/python.html">python</a>
+    </li>
+    <li class="list-group-item tag-8">
+      <a href="/tag/github.html">github</a>
+    </li>
+    <li class="list-group-item tag-8">
+      <a href="/tag/django.html">django</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Tag Cloud -->
+  </ul>
+</section>
+<!-- End Sidebar -->            </aside>
+        </div>
+    </div>
+</div>
+<!-- End Content Container -->
+
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2020 charles
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+
+    <script src="/theme/js/bodypadding.js"></script>
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'xhongc-disqus-com'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+
+
+</body>
+</html>
