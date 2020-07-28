@@ -1,5 +1,497 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-22T00:00:00+00:00</updated><entry><title>Docker 镜像修改和提交</title><link href="/docker-image-modify.html" rel="alternate"></link><published>2020-07-22T00:00:00+00:00</published><updated>2020-07-22T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-22:/docker-image-modify.html</id><content type="html">&lt;blockquote&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>少年白</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2020-07-28T00:00:00+00:00</updated><entry><title>PDF.js跨域（django后端处理数据流方法）</title><link href="/pdf_js_django_cors.html" rel="alternate"></link><published>2020-07-28T00:00:00+00:00</published><updated>2020-07-28T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-28:/pdf_js_django_cors.html</id><summary type="html">&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;PDF.js is a Portable Document Format (PDF) viewer that is built with HTML5.
+下载地址&lt;a href="https://github.com/mozilla/pdf.js/releases"&gt;https://github.com/mozilla/pdf.js/releases&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;跨域&lt;/h2&gt;
+&lt;p&gt;网上也有一些设置nginx服务器实现跨域，这里只考虑是把pdf文件请求到后端返回数据流的形式来实现&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先&lt;/li&gt;
+&lt;li&gt;修改viewer.js&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;getViewerConfiguration&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;pdfjsWebApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplicationOptions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;pdfjsWebAppOptions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;AppOptions&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;event&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CustomEvent&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;event&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;initCustomEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;webviewerloaded …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;PDF.js is a Portable Document Format (PDF) viewer that is built with HTML5.
+下载地址&lt;a href="https://github.com/mozilla/pdf.js/releases"&gt;https://github.com/mozilla/pdf.js/releases&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;跨域&lt;/h2&gt;
+&lt;p&gt;网上也有一些设置nginx服务器实现跨域，这里只考虑是把pdf文件请求到后端返回数据流的形式来实现&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先&lt;/li&gt;
+&lt;li&gt;修改viewer.js&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;getViewerConfiguration&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;pdfjsWebApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplicationOptions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;pdfjsWebAppOptions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;AppOptions&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;event&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CustomEvent&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;event&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;initCustomEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;webviewerloaded&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{});&lt;/span&gt;
+  &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;dispatchEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;event&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;pdfjsWebApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;改成&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fileUrl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="c1"&gt;//调整了此行&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;getViewerConfiguration&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;pdfjsWebApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplicationOptions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;pdfjsWebAppOptions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;AppOptions&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;event&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;CustomEvent&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;event&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;initCustomEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;webviewerloaded&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{});&lt;/span&gt;
+  &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;dispatchEvent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;event&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="c1"&gt;//调整了if 语句&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;fileUrl&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+    &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;defaultUrl&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;fileUrl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="nx"&gt;pdfjsWebApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PDFViewerApplication&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;注释&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;readyState&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;interactive&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;readyState&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;complete&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;addEventListener&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;DOMContentLoaded&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;修改viewer.js&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nx"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;webViewerInitialized&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;改成&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nx"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;//添加if语句&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;defaultUrl&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+      &lt;span class="nx"&gt;_app_options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;AppOptions&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;defaultUrl&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;defaultUrl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+   &lt;span class="p"&gt;}&lt;/span&gt;    
+   &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;webViewerInitialized&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ol&gt;
+&lt;li&gt;添加代码viewer.html
+&lt;script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;script&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;getQueryVariable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;variable&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;query&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;location&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;search&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;substring&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;vars&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;query&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;amp;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;pair&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;=&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pair&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nx"&gt;variable&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;pair&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;ready&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//获取要跨域访问的pdf地址&lt;/span&gt;
+        &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;pdfUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;getQueryVariable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;pdfurl&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pdfUrl&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nx"&gt;xhrPdf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;pdfUrl&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;href&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+                &lt;span class="c1"&gt;//调用viewer.js方法预览pdf&lt;/span&gt;
+                &lt;span class="nx"&gt;webViewerLoad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;href&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;})&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="p"&gt;});&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//添加xhrPdf函数&lt;/span&gt;
+    &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;xhrPdf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ajax&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+            &lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;get&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nx"&gt;async&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nx"&gt;mimeType&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;text/plain; charset=x-user-defined&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+            &lt;span class="nx"&gt;url&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/api/g_pdf?pdfurl=&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;//请求服务器数据 获取pdf数据流&lt;/span&gt;
+            &lt;span class="nx"&gt;success&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;rawLength&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="c1"&gt;//转换成pdf.js能直接解析的Uint8Array类型,见pdf.js-4068    &lt;/span&gt;
+                &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Uint8Array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;ArrayBuffer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rawLength&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+                &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;rawLength&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                    &lt;span class="nx"&gt;array&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;charCodeAt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="mh"&gt;0xff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+                &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;href&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;URL&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createObjectURL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Blob&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nx"&gt;array&lt;/span&gt;&lt;span class="p"&gt;]));&lt;/span&gt;&lt;span class="c1"&gt;//数据流转换成createObjectURL能解析的Blob类型&lt;/span&gt;
+                &lt;span class="nx"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;href&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;   &lt;span class="c1"&gt;//返回url         &lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;});&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;/script&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;然后&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;django 接口代码 来处理文件流&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PDFstreamViewsets&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mixins&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ListModelMixin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GenericViewSet&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;query_params&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;pdfurl&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;JsonResponse&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;status&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;0000&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+        &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;except&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+        &lt;span class="n"&gt;fd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;io&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;BytesIO&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;chunk&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iter_content&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;chunk&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;StreamingHttpResponse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;streaming_content&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getvalue&lt;/span&gt;&lt;span class="p"&gt;(),),&lt;/span&gt; &lt;span class="n"&gt;content_type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;application/octet-stream&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;urls.py&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# 注册URL路径，要求添加template文件目录，这里不再赘述&lt;/span&gt;
+&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;pdf_viewer/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;TemplateView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;as_view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;template_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;viewer.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;最后&lt;/h3&gt;
+&lt;p&gt;访问 http://127.0.0.1:8088/pdf_viewer/?pdfurl=http://www.mee.gov.cn/image20010518/5295.pdf
+可以看到效果了&lt;/p&gt;</content><category term="python"></category><category term="django"></category></entry><entry><title>Docker部署应用 Django+daphne+Gunicorn+Nginx+Redis</title><link href="/docker-django-daphne-gunicorn-nginx.html" rel="alternate"></link><published>2020-07-22T00:00:00+00:00</published><updated>2020-07-22T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-22:/docker-django-daphne-gunicorn-nginx.html</id><summary type="html">&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;这里使用Docker部署应用，用到的技术栈&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Django==2.2.14&lt;/li&gt;
+&lt;li&gt;Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。&lt;/li&gt;
+&lt;li&gt;Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。&lt;/li&gt;
+&lt;li&gt;Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。&lt;/li&gt;
+&lt;li&gt;Docker,  是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;tips: 这里默认大家已经安装&lt;code&gt;docker&lt;/code&gt; 和&lt;code&gt;docker-compose&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;代码准备&lt;/h2&gt;
+&lt;p&gt;这里使用GitHub上的django-channels实现的websokect项目:
+&lt;a href="https://github.com/xhongc/dj-chat"&gt;https://github.com/xhongc/dj-chat&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone  https://github.com/xhongc/dj-chat.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;构建镜像 …&lt;/h2&gt;</summary><content type="html">&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;这里使用Docker部署应用，用到的技术栈&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Django==2.2.14&lt;/li&gt;
+&lt;li&gt;Daphne, 支持HTTP, HTTP2 和 WebSocket 的asgi的服务器，这里主要是处理WebSocket 的请求。&lt;/li&gt;
+&lt;li&gt;Gunicorn, green unicorn 简称,unix系统的wsgi http服务器 处理符合wsgi的接口。&lt;/li&gt;
+&lt;li&gt;Nginx, 静态资源处理和请求的分发等，http请求指向gunicorn进程，websocket请求指向daphne进程等。&lt;/li&gt;
+&lt;li&gt;Docker,  是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;tips: 这里默认大家已经安装&lt;code&gt;docker&lt;/code&gt; 和&lt;code&gt;docker-compose&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;代码准备&lt;/h2&gt;
+&lt;p&gt;这里使用GitHub上的django-channels实现的websokect项目:
+&lt;a href="https://github.com/xhongc/dj-chat"&gt;https://github.com/xhongc/dj-chat&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone  https://github.com/xhongc/dj-chat.git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;构建镜像（Dockerfile）&lt;/h2&gt;
+&lt;p&gt;目录结构 &lt;/p&gt;
+&lt;p&gt;&lt;img alt="UqNSv4.png" src="https://s1.ax1x.com/2020/07/23/UqNSv4.png"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;项目镜像 &lt;code&gt;dj-chat/Dockerfile&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="s"&gt;python:3.7&lt;/span&gt;
+
+&lt;span class="k"&gt;ENV&lt;/span&gt; PYTHONUNBUFFERED &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="c"&gt;# 更新apt-get&lt;/span&gt;
+&lt;span class="k"&gt;RUN&lt;/span&gt; apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install -y gettext python3-dev libpq-dev
+&lt;span class="k"&gt;RUN&lt;/span&gt; mkdir /dj-chat
+&lt;span class="c"&gt;#设置工作目录&lt;/span&gt;
+&lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="s"&gt; /dj-chat&lt;/span&gt;
+&lt;span class="c"&gt;#将当前目录加入到工作目录中&lt;/span&gt;
+&lt;span class="k"&gt;ADD&lt;/span&gt; . /dj-chat
+
+&lt;span class="k"&gt;RUN&lt;/span&gt; pip install -r /dj-chat/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+&lt;span class="k"&gt;RUN&lt;/span&gt; python manage.py migrate
+
+&lt;span class="k"&gt;EXPOSE&lt;/span&gt;&lt;span class="s"&gt; 80 8001 8000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4&gt;构建一个项目的镜像&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;FROM python:3.7&lt;/code&gt; 基于python3.7镜像进行一步一步的叠层操作。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ENV PYTHONUNBUFFERED 1&lt;/code&gt; 设置系统环境变量&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ADD . /dj-chat&lt;/code&gt;  将当前目录加入到工作目录中&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RUN pip install -r /dj-chat/requirements.txt&lt;/code&gt; 镜像目录已经有了代码 可以开始安装python环境&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RUN python manage.py migrate&lt;/code&gt;迁移数据库&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;EXPOSE 80 8001 8000&lt;/code&gt; 暴露端口 之后daphne ，gunicorn服务方便映射&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h4&gt;Nginx 镜像&lt;code&gt;dj-chat/nginx/Dockerfile&lt;/code&gt;&lt;/h4&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="s"&gt;nginx&lt;/span&gt;
+
+&lt;span class="c"&gt;#对外暴露端口&lt;/span&gt;
+&lt;span class="k"&gt;EXPOSE&lt;/span&gt;&lt;span class="s"&gt; 80&lt;/span&gt;
+&lt;span class="k"&gt;RUN&lt;/span&gt; mkdir -p /home/ubuntu/chat_log
+&lt;span class="k"&gt;RUN&lt;/span&gt; rm /etc/nginx/conf.d/default.conf
+&lt;span class="k"&gt;ADD&lt;/span&gt; ./nginx/nginx-chat.conf  /etc/nginx/conf.d/
+&lt;span class="k"&gt;ADD&lt;/span&gt; ./templates/chat/boot_chat.html  /home/ubuntu/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;RUN mkdir -p /home/ubuntu/chat_log&lt;/code&gt; nginx log文件目录，可以自行创建在其他目录。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RUN rm /etc/nginx/conf.d/default.conf&lt;/code&gt; 移除默认nginx配置。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ADD ./nginx/nginx-chat.conf  /etc/nginx/conf.d/&lt;/code&gt; 添加自己写的nginx配置&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ADD ./templates/chat/boot_chat.html  /home/ubuntu/&lt;/code&gt; 项目nginx首页index&lt;/p&gt;
+&lt;h2&gt;编排镜像（docker-compose）&lt;/h2&gt;
+&lt;p&gt;把各个镜像连结起来&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;3.7&amp;#39;&lt;/span&gt;
+
+&lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt;
+    &lt;span class="k"&gt;restart&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;always&lt;/span&gt;
+  &lt;span class="n"&gt;dj&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wsgi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;
+    &lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;dj-chat:latest&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;dj-chat-g-unicorn&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;c&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;gunicorn -w 1 -k gevent -b 0.0.0.0:8000 dj_chat.wsgi:application&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;8000:8000&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt;
+    &lt;span class="n"&gt;links&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt;
+    &lt;span class="n"&gt;expose&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;8000&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;dj&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;asgi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;dj-chat:latest&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;dj-chat-daphne&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;c&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;daphne -b 0.0.0.0 -p 8001 dj_chat.asgi:application&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;8001:8001&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt;
+    &lt;span class="n"&gt;links&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;redis&lt;/span&gt;
+    &lt;span class="n"&gt;expose&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;8001&amp;quot;&lt;/span&gt;
+  &lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;
+      &lt;span class="n"&gt;dockerfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;Dockerfile&lt;/span&gt;
+    &lt;span class="n"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;nginx-chat&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;nginx-chat&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;dj&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;asgi&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;dj&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;wsgi&lt;/span&gt;
+    &lt;span class="n"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;static&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ubuntu&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;static&lt;/span&gt;
+    &lt;span class="n"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;80:80&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;version&lt;/code&gt; 对应docker版本todo&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;services&lt;/code&gt; 构建各个镜像服务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;redis&lt;/code&gt; 没有自写Dokcerfile的镜像从官方hub拉取redis服务&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;dj-chat.wsgi&lt;/code&gt;：这里是应用于gunicorn&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;build： 指定Dockerfile 文件位置&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;image：镜像名称&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;container_name：容器名称&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;command 执行命令启动Gunicorn（注意开的ip是0.0.0.0）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ports： 端口映射（todo）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;depends_on： 容器的依赖 ，被依赖的服务会先启动&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;links ：容器连接 todo&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;expose 暴露端口&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;dj-chat.asgi&lt;/code&gt; 应用于daphne&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;image：使用上面已经构建的镜像，不需要重新&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;container_name：容器名称&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;command 执行命令启动Daphne（注意开的ip是0.0.0.0）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ports： 端口映射（todo）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;depends_on： 容器的依赖 ，被依赖的服务会先启动&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;links ：容器连接 todo&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;expose 暴露端口&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;nginx&lt;/code&gt;：构建&lt;code&gt;dj-chat/nginx/Dockerfile&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;build：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;context 上下文目录&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;dockerfile：根据上下文目录的dockerfile相对路径&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;image：镜像&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;container_name：容器名称&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;depends_on：依赖wsgi和asgi服务&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;volumes：静态文件挂载在nginx容器里&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;expose 和 ports 都可以暴露容器的端口&lt;/strong&gt;，
+区别是 expose 仅暴露给其他容器，而 ports 会暴露给其他容器和宿主机，像dj-chat.asgi:设置了ports:- "8001:8001" 可以宿主机直接ip：8001 直接访问到。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;坏的&lt;/strong&gt;&lt;none&gt;:&lt;none&gt;&lt;strong&gt;镜像&lt;/strong&gt;的产生而docker build 或是 pull 命令就会产生临时镜像。如果我们用docker-compose build新镜像后，因为版本更新需要重新创建，那么以前那个版本的镜像就会
+成为临时镜像。这个是需要删除的。删除命令见下。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;清除坏的&amp;lt;none&amp;gt;:&amp;lt;none&amp;gt;镜像
+docker rmi &lt;span class="k"&gt;$(&lt;/span&gt;docker images -f &lt;span class="s2"&gt;&amp;quot;dangling=true&amp;quot;&lt;/span&gt; -q&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;nginx配置和django配置&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;dj-chat/nginx/nginx-chat.conf&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;proxy_pass http://dj-chat.wsgi:8000;&lt;/code&gt;
+&lt;code&gt;proxy_pass http://dj-chat.asgi:8001;&lt;/code&gt;
+ngixn配置代理host要改成docker-compose的容器名称&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;dj-chat/dj-chat/settings&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;CACHES&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s2"&gt;&amp;quot;default&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;BACKEND&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_redis.cache.RedisCache&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;LOCATION&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;redis://redis:6379/0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;TIMEOUT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1800&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# 缓存超时时间（默认300，None表示永不过期，0表示立即过期）&lt;/span&gt;
+        &lt;span class="s2"&gt;&amp;quot;OPTIONS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="s2"&gt;&amp;quot;MAX_ENTRIES&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# 最大缓存个数（默认300）&lt;/span&gt;
+            &lt;span class="s2"&gt;&amp;quot;CULL_FREQUENCY&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）&lt;/span&gt;
+            &lt;span class="s2"&gt;&amp;quot;CLIENT_CLASS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;django_redis.client.DefaultClient&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# redis客户端&lt;/span&gt;
+            &lt;span class="s2"&gt;&amp;quot;CONNECTION_POOL_KWARGS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;max_connections&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;  &lt;span class="c1"&gt;# redis最大连接池配置&lt;/span&gt;
+            &lt;span class="s2"&gt;&amp;quot;PASSWORD&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# redis密码&lt;/span&gt;
+        &lt;span class="p"&gt;},&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;KEY_PREFIX&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# 缓存key的前缀（默认空）&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;VERSION&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="c1"&gt;# 缓存key的版本（默认1）&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;设置LOCATION的HOST要改成docker-compose的容器名称&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;CHANNEL_LAYERS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;BACKEND&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;channels_redis.core.RedisChannelLayer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;CONFIG&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="s2"&gt;&amp;quot;hosts&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;redis&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6379&lt;/span&gt;&lt;span class="p"&gt;)],&lt;/span&gt;
+        &lt;span class="p"&gt;},&lt;/span&gt;
+    &lt;span class="p"&gt;},&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;设置CHANNEL_LAYERS的HOST要改成docker-compose的容器名称redis&lt;/p&gt;
+&lt;h2&gt;构建，运行容器&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker-compose build
+docker-compose up -d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;可以看到容器运行成功，访问127.0.0.1或者你的公网ip可以看到页面。&lt;/p&gt;
+&lt;h2&gt;持续开发项目&lt;/h2&gt;
+&lt;p&gt;如果项目还是在快速开发状态，可以把代码挂载卷上
+修改
+dj-chat/Dockerfile&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="s"&gt;python:3.7&lt;/span&gt;
+
+&lt;span class="k"&gt;ENV&lt;/span&gt; PYTHONUNBUFFERED &lt;span class="m"&gt;1&lt;/span&gt;
+
+&lt;span class="k"&gt;RUN&lt;/span&gt; apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install -y gettext python3-dev libpq-dev
+
+&lt;span class="k"&gt;RUN&lt;/span&gt; mkdir /dj-chat
+&lt;span class="c"&gt;#设置工作目录&lt;/span&gt;
+&lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="s"&gt; /dj-chat&lt;/span&gt;
+&lt;span class="c"&gt;#将当前目录加入到工作目录中&lt;/span&gt;
+&lt;span class="c"&gt;#ADD . /dj-chat # 挂载卷中可以注释&lt;/span&gt;
+&lt;span class="k"&gt;ADD&lt;/span&gt; ./requirements.txt /dj-chat/
+&lt;span class="k"&gt;RUN&lt;/span&gt; pip install -r /dj-chat/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+
+&lt;span class="k"&gt;EXPOSE&lt;/span&gt;&lt;span class="s"&gt; 80 8001 8000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;和dj-chat/docker-compose.yml&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;dj-chat.wsgi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;...&lt;/span&gt;
+    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;volumes&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;.:/dj-chat&lt;/span&gt;
+&lt;span class=" -Error"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;dj-chat.asgi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;...&lt;/span&gt;
+    &lt;span class="l l-Scalar l-Scalar-Plain"&gt;volumes&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;.:/dj-chat&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;由github控制代码更新，&lt;code&gt;docker-compose restart&lt;/code&gt; 重启容器生效&lt;/p&gt;</content><category term="python"></category><category term="docker"></category></entry><entry><title>Docker 镜像修改和提交</title><link href="/docker-image-modify.html" rel="alternate"></link><published>2020-07-22T00:00:00+00:00</published><updated>2020-07-22T00:00:00+00:00</updated><author><name>charles</name></author><id>tag:None,2020-07-22:/docker-image-modify.html</id><content type="html">&lt;blockquote&gt;
 &lt;p&gt;当你发现构建的镜像缺少python模块，可以进入镜像修改&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;hr&gt;
